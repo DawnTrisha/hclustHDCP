@@ -3,7 +3,13 @@ Title: High Dimensional Change-point detection based on Hierarchical clustering
 Version: 0.0.0.9000
 Authors@R: 
     person("Trisha", "Dawn", , "trisha@stat.tamu.edu", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: Change-point detection is a classical problem in statistics with 
+             various application areas such as univariate and multivariate 
+             observations, even networks. Here hierarchical clustering method 
+             based on linkages are applied to detect the change-points in 
+             high dimensional regime. Method is applicable for both the situations 
+             where the number of change-points to be detected is known as well as
+             unknown.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
