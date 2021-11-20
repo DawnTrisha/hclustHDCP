@@ -1,9 +1,12 @@
-# Function to detect Single Change Point
+# Function to detect Single Change Point when it is known that only one change point exists
 
 # Inputs:
 # Data matrix X (n X d) : whose rows are the d dimensional observations
-# numcp : Number of change-points to detect (integer between 1 to n-1)
-detect_single_cp = function(X, numcp, dist.method)
+# dist.method : Linkage method to be used in the hierarchical clustering (single, average or complete)
+
+# Output:
+# detectcp: Detected single change-point location
+detect_single_cp = function(X, dist.method)
 {
   # Number of observations
   n = nrow(X)
@@ -57,4 +60,10 @@ detect_single_cp = function(X, numcp, dist.method)
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
   }
 
+  # Detected single change-point
+  detect.single.cp = trackclust_mat[n, 1:2] - 1
+  detect.single.cp = detectcp[detectcp != 0]
+
+  # Return detected single change-point location
+  return(detect.single.cp)
 }
