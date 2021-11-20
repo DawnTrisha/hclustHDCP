@@ -3,7 +3,7 @@
 # Inputs:
 # Data matrix X (n X d) : whose rows are the d dimensional observations
 # numcp : Number of change-points to detect (integer between 1 to n-1)
-detect_single_cp = function(X, numcp)
+detect_single_cp = function(X, numcp, dist.method)
 {
   # Number of observations
   n = nrow(X)
@@ -37,12 +37,18 @@ detect_single_cp = function(X, numcp)
 
       # Distance between the two consecutive clusters
 
-      # return average linkage value
-      return(mean(dist_mat[clust_index_1,clust_index_2]))
-
-      #return(min(DX[clus1ind,clus2ind]))               #single linkage
-      #return(max(DX[clus1ind,clus2ind]))               #complete linkage
-    })
+      if(dist.method == "single")
+      {
+        # return single linkage value
+        return(min(dist_mat[clust_index_1,clust_index_2]))
+      } else if(dist.method == "average") {
+        # return average linkage value
+        return(mean(dist_mat[clust_index_1,clust_index_2]))
+      }else{
+        # return complete linkage value
+        return(max(dist_mat[clust_index_1,clust_index_2]))
+      }
+  })
 
     # detecting which clusters are closest
     current_changepoint = which.min(distvec)
