@@ -62,7 +62,7 @@ detect_single_cp = function(X, dist.method)
 
   # Detected single change-point
   detect.single.cp = trackclust_mat[n, 1:2] - 1
-  detect.single.cp = detectcp[detectcp != 0]
+  detect.single.cp = detect.single.cp[detect.single.cp != 0]
 
   # Return detected single change-point location
   return(detect.single.cp)
