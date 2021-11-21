@@ -38,7 +38,7 @@ detect_multiple_cp = function(X, numcp, dist.method)
   trackclust_mat[1, ] = 1:n
 
   # Running loop till n-1 (since we need pairwise distances)
-  for(j in 1:(n-1))
+  for(j in 1:(n - (numcp + 1)))
   {
     # Since at each stage the number of clusters decreases by 1
     l = n - j
@@ -71,16 +71,18 @@ detect_multiple_cp = function(X, numcp, dist.method)
     })
 
     # detecting which clusters are closest
-    current_changepoint = which.min(distvec)
+    current_changepoint = which.min(link_dist)
 
     # Merging the clusters and storing the numbers from which only new clusters start
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
   }
 
   # Extracting the detected multiple change-points
-  detect.multiple.cp = trackclust_mat[n + 1 - numcp, 1:numcp] - 1
+  detect.multiple.cp = trackclust_mat[n - (numcp + 1) +1, 1:(numcp + 1)] - 1
   detect.multiple.cp = detect.multiple.cp[detect.multiple.cp != 0]
 
   #Return detected change-points
   return(detect.multiple.cp)
 }
+
+
