@@ -37,7 +37,7 @@ detect_multiple_cp = function(X, numcp, dist.method)
   # At initial stage one observation corresponds to one cluster
   trackclust_mat[1, ] = 1:n
 
-  # Running loop till n-1 (since we need pairwise distances)
+  # Running loop till n - (numcp + 1) (since desired number of clusters is numcp + 1)
   for(j in 1:(n - (numcp + 1)))
   {
     # Since at each stage the number of clusters decreases by 1
@@ -47,9 +47,10 @@ detect_multiple_cp = function(X, numcp, dist.method)
     current_track = trackclust_mat[j, ]
 
     # Calculating linkage distances
+    # loop till 1:l at each stage because we need to work with two consecutive clusters at a time
     link_dist = sapply(1:l, function(i) {
 
-      # Considering two clusters at a time
+      # Considering two consecutive clusters at a time
       # One cluster index
       clust_index_1 = current_track[i]:(current_track[i+1]-1)
       # Immediate next cluster index
@@ -77,8 +78,8 @@ detect_multiple_cp = function(X, numcp, dist.method)
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
   }
 
-  # Extracting the detected multiple change-points
-  detect.multiple.cp = trackclust_mat[n - (numcp + 1) +1, 1:(numcp + 1)] - 1
+  # Extracting the detected multiple change-points (desired clusters numcp + 1)
+  detect.multiple.cp = trackclust_mat[n - (numcp + 1) + 1, 1:(numcp + 1)] - 1
   detect.multiple.cp = detect.multiple.cp[detect.multiple.cp != 0]
 
   #Return detected change-points
