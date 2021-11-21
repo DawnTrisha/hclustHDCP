@@ -7,6 +7,16 @@
 
 # Output:
 # detectcp: Detected location vector for detected multiple change-points
+#' Title
+#'
+#' @param X
+#' @param numcp
+#' @param dist.method
+#'
+#' @return
+#' @export
+#'
+#' @examples
 detect_multiple_cp = function(X, numcp, dist.method)
 {
   # Number of observations

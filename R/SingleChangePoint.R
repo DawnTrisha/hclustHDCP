@@ -6,6 +6,15 @@
 
 # Output:
 # detectcp: Detected single change-point location
+#' Title
+#'
+#' @param X
+#' @param dist.method
+#'
+#' @return
+#' @export
+#'
+#' @examples
 detect_single_cp = function(X, dist.method)
 {
   # Number of observations
