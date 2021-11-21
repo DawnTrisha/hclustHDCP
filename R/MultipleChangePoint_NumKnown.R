@@ -12,6 +12,12 @@ detect_single_cp = function(X, numcp, dist.method)
   # Number of observations
   n = nrow(X)
 
+  # Compatibility check if numcp greater than 1 and less than n
+  if((numcp == 1) || (numcp == n))
+  {
+    stop("Incorrect number of change-points to detect.")
+  }
+
   # Calculate distance matrix
   dist_mat = as.matrix(dist(X), method = "euclidean")
 
