@@ -7,7 +7,7 @@
 
 # Output:
 # detectcp: Detected location vector for detected multiple change-points
-detect_single_cp = function(X, numcp, dist.method)
+detect_multiple_cp = function(X, numcp, dist.method)
 {
   # Number of observations
   n = nrow(X)
@@ -67,5 +67,10 @@ detect_single_cp = function(X, numcp, dist.method)
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
   }
 
+  # Extracting the detected multiple change-points
+  detect.multiple.cp = trackclust_mat[n + 1 - numcp, 1:numcp] - 1
+  detect.multiple.cp = detect.multiple.cp[detect.multiple.cp != 0]
 
+  #Return detected change-points
+  return(detect.multiple.cp)
 }
