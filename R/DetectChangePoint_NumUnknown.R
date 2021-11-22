@@ -26,7 +26,7 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
   trackclust_mat[1, ] = 1:n
 
   # Calculating penalized dunn index at the first stage when number of clusters same as number of observations
-  penalized_dunn = c(-lambda * n * log(d), numeric(n-1))
+  penalized_dunn = c(-lambda * n * log(d), numeric(n - 1))
 
   # Running entire loop till n - 1 (since desired number of clusters is estimated_cp + 1)
   for(j in 1:(n - 1))
@@ -67,6 +67,15 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
 
     # Merging the clusters and storing the numbers from which only new clusters start
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
+
+    # Deleting the row and column from the distance matrix for that observation which got merged with the previous one
+    dist_mat = as.matrix(dist_mat[-(current_changepoint + 1), -(current_changepoint + 1)])
+
+    # Recalculate the distance matrix based on the changed clusters
+    vec1 = trackclust_mat[j + 1, ]
+    cluster_ind1 = vec1[current_changepoint]:(ifelse(current_changepoint < l, vec1[current_changepoint+1] - 1, n))
+
+
   }
 
 
