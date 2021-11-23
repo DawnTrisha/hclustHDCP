@@ -30,7 +30,7 @@ detect_multiple_cp = function(X, D = NULL, numcp, dist.method = "average")
   }
 
   # Check if Distance matrix is supplied or not, if supplied
-  if(is.NULL(D) == FALSE)
+  if(is.null(D) == FALSE)
   {
     if((nrow(D) != n) || (ncol(D) != n))
     {
