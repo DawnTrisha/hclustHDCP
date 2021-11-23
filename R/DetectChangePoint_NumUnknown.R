@@ -7,7 +7,7 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
   d = ncol(X)
 
   # Check if Distance matrix is supplied or not, if supplied
-  if(is.NULL(D) == FALSE)
+  if(is.null(D) == FALSE)
   {
     if((nrow(D) != n) || (ncol(D) != n))
     {
