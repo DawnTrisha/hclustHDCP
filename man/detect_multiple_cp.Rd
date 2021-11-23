@@ -4,7 +4,7 @@
 \alias{detect_multiple_cp}
 \title{Title}
 \usage{
-detect_multiple_cp(X, numcp, dist.method)
+detect_multiple_cp(X, D = NULL, numcp, dist.method = "average")
 }
 \arguments{
 \item{dist.method}{}
