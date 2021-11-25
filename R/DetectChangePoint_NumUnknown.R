@@ -18,6 +18,8 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
   # Calculate distance matrix
   dist_mat = as.matrix(dist(X), method = "euclidean")
 
+  # Make a copy of distance matrix to be used after at the time of recalculation of dsitance matrix after cluster update
+  dist_mat_copy = dist_mat
 
   # Initialize the matrix with zeroes which will monitor merging of clusters
   trackclust_mat = matrix(0, n, n)
@@ -68,12 +70,14 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
     # Merging the clusters and storing the numbers from which only new clusters start
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
 
-    # Deleting the row and column from the distance matrix for that observation which got merged with the previous one
-    dist_mat = as.matrix(dist_mat[-(current_changepoint + 1), -(current_changepoint + 1)])
+    # Deleting the row and column from the stored distance matrix for that observation which got merged with the previous one
+    dist_mat_copy = as.matrix(dist_mat_copy[-(current_changepoint + 1), -(current_changepoint + 1)])
 
     # Recalculate the distance matrix based on the changed clusters
     vec1 = trackclust_mat[j + 1, ]
-    cluster_ind1 = vec1[current_changepoint]:(ifelse(current_changepoint < l, vec1[current_changepoint+1] - 1, n))
+
+    # Select all those observations in one cluster which got merged in this step (hence vec1[current_changepoint + 1] - 1 just to stop before the next cluster starts)
+    cluster_ind1 = vec1[current_changepoint]:(ifelse(current_changepoint < l, vec1[current_changepoint + 1] - 1, n))
 
 
   }
