@@ -99,6 +99,15 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
     # Updated distance matrix after clustering
     dist_mat_copy[current_changepoint, ] = updated_dist
     dist_mat_copy[ , current_changepoint] = updated_dist
+
+    # Calculation of penalized dunn index in each stage of updated cluster
+    # Numerator for the first term
+    W_current_clust = max(diag(dist_mat_copy))
+    # Denominator for the first term
+    B_current_clust = ifelse(l > 1, min(dist_mat_copy[upper.tri(dist_mat_copy)]), B_current_clust)
+
+    # Using penalty function as (lambda * l * log(d))
+    penalized_dunn[j + 1] = (B_current_clust/W_current_clust) - (lambda * l * log(d))
   }
 
 
