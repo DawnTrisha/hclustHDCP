@@ -110,13 +110,13 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
     penalized_dunn[j + 1] = (B_current_clust/W_current_clust) - (lambda * l * log(d))
   }
 
+  # estimated number of clusters based on minimum penalized dunn index
+  estimated.clust = which.max(penalized_dunn)
 
+  # Estimated change-point locations based estimated clusters based on penalized dunn index
+  detect.cp = trackclust_mat[estimated.clust, 2:(n - estimated.clust + 1)] - 1
 
+  # Returning estimated change-point locations
+  return(detect.cp)
 
-  # # Extracting the detected multiple change-points (desired clusters numcp + 1)
-  # detect.multiple.cp = trackclust_mat[n - (numcp + 1) + 1, 1:(numcp + 1)] - 1
-  # detect.multiple.cp = detect.multiple.cp[detect.multiple.cp != 0]
-  #
-  # #Return detected change-points
-  # return(detect.multiple.cp)
 }
