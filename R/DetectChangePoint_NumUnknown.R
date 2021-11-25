@@ -79,7 +79,26 @@ detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.
     # Select all those observations in one cluster which got merged in this step (hence vec1[current_changepoint + 1] - 1 just to stop before the next cluster starts)
     cluster_ind1 = vec1[current_changepoint]:(ifelse(current_changepoint < l, vec1[current_changepoint + 1] - 1, n))
 
+    # Counting the total number of observations those got merged
+    len_cluster_ind_1 = length(cluster_ind1)
 
+
+    updated_dist = sapply(1:l, function(i){
+      # Considering existing clusters and calling it cluster_ind2
+      cluster_ind2 = vec1[i]:(ifelse( i < l, vec1[i+1] - 1, n))
+
+      # Calculating length of clusters each time
+      len_cluster_ind_2 = length(cluster_ind2)
+
+      # Recalculating the distance matrix with updated clusters
+      dist_val = sum(dist_mat[clus1ind,clus2ind])
+
+      return(ifelse(i == current_changepoint, dist_val/(len_cluster_ind_1*(len_cluster_ind_1-1)), dist_val/(len_cluster_ind_1*len_cluster_ind_2)))
+    })
+
+    # Updated distance matrix after clustering
+    dist_mat_copy[current_changepoint, ] = updated_dist
+    dist_mat_copy[ , current_changepoint] = updated_dist
   }
 
 
