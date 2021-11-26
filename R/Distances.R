@@ -1,11 +1,11 @@
 # Calculation of MADD distance and generalized MADD distance between two vectors
 
 # Number of observations considered
-n = nrow(X)
+# n = nrow(X)
 
 # Calculation of Mean Absolute Deviation of Distances (MADD) between two observations (two vectors here)
 # Y here stands for the observations except the two vectors between which the distance is calculated
-MADD_dist = function(u,v,Y)
+MADD_dist = function(n, u, v, Y)
 {
 
   temp = 0
