@@ -1,5 +1,4 @@
-# Calculation of MADD distance and generalized MADD distance between two vectors
-
+# Calculation of MADD distance and generalized MADD distance matrix
 # Number of observations considered
 # n = nrow(X)
 
@@ -31,3 +30,36 @@ MADD_dist = function(n, u, v, Y)
   return(as.vector(dist))
 }
 
+# Calculation of MADD distance matrix
+MADD_distmat = function(X)
+{
+  # Number of observations
+  n = nrow(X)
+
+  # Initialization of distance matrix to which value will be stored
+  dist_matrix = array(0, dim = c(n,n))
+
+  # For any observation
+  for(i in 1:(n-1))
+  {
+    # Fix that observations
+    u = X[i,]
+
+    # Run the loop for all the other observations
+    for(j in (i+1):n)
+    {
+      # Other observations
+      v = X[j,]
+      # Other observations eliminating the two chosen observations
+      Y = X[-c(i,j),]
+
+      # Call the MADD_dist function between the two observations
+      dist_matrix[i,j] = (MADD_dist(n, u, v, Y))^2
+      # Since symmetric
+      dist_matrix[j,i] = dist_matrix[i,j]
+    }
+  }
+
+  # Return distance matrix
+  return(dist_matrix)
+}
