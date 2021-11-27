@@ -63,3 +63,16 @@ MADD_distmat = function(X)
   # Return distance matrix
   return(dist_matrix)
 }
+
+#######################################################
+
+# Code for generalized distance function to be used instead of Euclidean distance during the calculation of MADD distance
+# x, y : be two observations
+# d : dimension of x and y
+gen_f = function(x, y, d)
+{
+  h = sum(1 - exp(-abs(x-y)))/d
+
+  # Returning scalar h
+  return(h)
+}
