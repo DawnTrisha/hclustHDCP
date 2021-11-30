@@ -20,6 +20,15 @@ detect_single_cp = function(X, dist.method)
   # Number of observations
   n = nrow(X)
 
+  # Check if Distance matrix is supplied or not, if supplied
+  if(is.null(D) == FALSE)
+  {
+    if((nrow(D) != n) || (ncol(D) != n))
+    {
+      stop("Incorrect supplied distance matrix")
+    }
+  }
+
   # Calculate distance matrix
   dist_mat = as.matrix(dist(X), method = "euclidean")
 
