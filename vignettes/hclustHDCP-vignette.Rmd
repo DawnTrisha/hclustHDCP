@@ -1,0 +1,20 @@
+---
+title: "Cluster Based High Dimensional Change-point Detection"
+author: "Trisha Dawn"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cluster Based High Dimensional Change-point Detection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hclustHDCP)
+```
