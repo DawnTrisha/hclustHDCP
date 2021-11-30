@@ -71,8 +71,35 @@ MADD_distmat = function(X)
 # d : dimension of x and y
 gen_f = function(x, y, d)
 {
-  h = sum(1 - exp(-abs(x-y)))/d
+  h = sum(1 - exp(-abs(x - y)))/d
 
   # Returning scalar h
   return(h)
+}
+
+# Calculation of generalized MADD distance between two observations
+gen_MADD_dist = function(n, u, v, Y)
+{
+
+  temp = 0
+
+  for(k in 1:(n-2))
+  {
+    d1 = 0
+    d2 = 0
+
+    # Generalized Distance between u and other observations
+    d1 = gen_f(u, Y[k, ])
+    # Generalized Distance between v and other observations
+    d2 = gen_f(v, Y[k, ])
+
+    # Sum of absolute differences
+    temp = temp + abs(d1 - d2)
+  }
+
+  # Mean of the absolute deviation of distances
+  dist = (1/(n-2))*temp
+
+  # Returning the distance
+  return(as.vector(dist))
 }
