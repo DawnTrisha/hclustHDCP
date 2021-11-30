@@ -1,7 +1,8 @@
 
-X1=mvtnorm::rmvnorm(5,mean=c(0,0),sigma=diag(2))
-X2=mvtnorm::rmvnorm(5,mean=c(10,10),sigma=diag(2))
-X3=mvtnorm::rmvnorm(5,mean=c(5,5),sigma=diag(2))
+X1 = matrix(rnorm(5*2, mean = 0, sd = 1), nrow = 5, ncol = 2)
+X2 = matrix(rnorm(5*2, mean = 3, sd = 1), nrow = 5, ncol = 2)
+X3 = matrix(rnorm(5*2, mean = 6, sd = 1), nrow = 5, ncol = 2)
+
 
 X = rbind(X1, X2, X3)
 
