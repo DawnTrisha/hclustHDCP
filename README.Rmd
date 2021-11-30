@@ -16,7 +16,7 @@ This package deals with one of the classical problem in statistics, called chang
 devtools::install_github("DawnTrisha/hclustHDCP")
 
 # Remaining work
-The following works need to be performed :
+The following works listed need to be performed :
 
 1. Complete coding DetectChangePoint_NumUnknown.R for detecting change-point when the number of change-points to detect is *unknown*
 
