@@ -24,3 +24,10 @@ detect_multiple_cp(X = X, numcp = 2, dist.method = "average")
 #
 # source("MultipleChangePoint_NumKnown.R")
 
+d = 5
+X1 = matrix(rnorm((5 * 5), mean = 0, sd = 1), nrow = 5, ncol = d)
+X2 = matrix(rnorm((5 * 5), mean = 4, sd = 1), nrow = 5, ncol = d)
+X3 = matrix(rnorm((5 * 5), mean = 8, sd = 1), nrow = 5, ncol = d)
+X = rbind(X1, X2, X3)
+
+D = as.matrix(dist(X, method = "euclidean"))
