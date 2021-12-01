@@ -17,20 +17,23 @@
 #' @examples
 detect_single_cp = function(X, dist.method)
 {
-  # Number of observations
-  n = nrow(X)
-
   # Check if Distance matrix is supplied or not, if supplied
   if(is.null(D) == FALSE)
   {
-    if((nrow(D) != n) || (ncol(D) != n))
+    if(nrow(D) != ncol(D))
     {
       stop("Incorrect supplied distance matrix")
     }
+
+    # Distance matrix
+    dist_mat = D
+  }else{
+    # Calculate distance matrix
+    dist_mat = as.matrix(dist(X), method = "euclidean")
   }
 
-  # Calculate distance matrix
-  dist_mat = as.matrix(dist(X), method = "euclidean")
+  # Number of observations
+  n = nrow(dist_mat)
 
   # Initialize the matrix with zeroes which will monitor merging of clusters
   trackclust_mat = matrix(0, n, n)
