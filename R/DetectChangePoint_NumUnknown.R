@@ -1,22 +1,38 @@
-detect_estimated_cp = function(X, D = NULL, dist.method = "average", lambda = 0.02)
+#' Title
+#'
+#' @param X
+#' @param D
+#' @param d
+#' @param dist.method
+#' @param lambda
+#'
+#' @return
+#' @export
+#'
+#' @examples
+detect_estimated_cp = function(X = NULL, D = NULL, d = NULL, dist.method = "average", lambda = 0.02)
 {
-  # Number of observations
-  n = nrow(X)
-
-  # Dimension of observations
-  d = ncol(X)
-
   # Check if Distance matrix is supplied or not, if supplied
   if(is.null(D) == FALSE)
   {
-    if((nrow(D) != n) || (ncol(D) != n))
+    if(nrow(D) != ncol(D))
     {
       stop("Incorrect supplied distance matrix")
     }
+
+    # Distance matrix
+    dist_mat = D
+  }else{
+    # Calculate distance matrix
+    dist_mat = as.matrix(stats::dist(X), method = "euclidean")
+
+    # Dimension of observations
+    d = ncol(X)
   }
 
-  # Calculate distance matrix
-  dist_mat = as.matrix(dist(X), method = "euclidean")
+  # Number of observations
+  n = nrow(dist_mat)
+
 
   # Make a copy of distance matrix to be used after at the time of recalculation of dsitance matrix after cluster update
   dist_mat_copy = dist_mat
