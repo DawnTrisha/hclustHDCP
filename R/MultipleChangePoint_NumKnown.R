@@ -18,10 +18,24 @@
 #' @export
 #'
 #' @examples
-detect_multiple_cp = function(X, D = NULL, numcp, dist.method = "average")
+detect_multiple_cp = function(X = NULL, D = NULL, numcp, dist.method = "average")
 {
+  # Check if Distance matrix is supplied or not, if supplied
+  if(is.null(D) == FALSE)
+  {
+    if(nrow(D) != ncol(D))
+    {
+      stop("Incorrect supplied distance matrix")
+    }
+
+    dist_mat = D
+  }else{
+    # Calculate distance matrix
+    dist_mat = as.matrix(dist(X), method = "euclidean")
+  }
+
   # Number of observations
-  n = nrow(X)
+  n = nrow(dist_mat)
 
   # Compatibility check if numcp greater than 1 and less than n
   if((numcp == 1) || (numcp == n))
@@ -29,17 +43,7 @@ detect_multiple_cp = function(X, D = NULL, numcp, dist.method = "average")
     stop("Incorrect number of change-points to detect.")
   }
 
-  # Check if Distance matrix is supplied or not, if supplied
-  if(is.null(D) == FALSE)
-  {
-    if((nrow(D) != n) || (ncol(D) != n))
-    {
-     stop("Incorrect supplied distance matrix")
-    }
-  }
 
-  # Calculate distance matrix
-  dist_mat = as.matrix(dist(X), method = "euclidean")
 
 
   # Initialize the matrix with zeroes which will monitor merging of clusters
