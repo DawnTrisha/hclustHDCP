@@ -107,7 +107,7 @@ detect_estimated_cp = function(X = NULL, D = NULL, d = NULL, dist.method = "aver
       len_cluster_ind_2 = length(cluster_ind2)
 
       # Recalculating the distance matrix with updated clusters
-      dist_val = sum(dist_mat[clus1ind,clus2ind])
+      dist_val = sum(dist_mat[cluster_ind1, cluster_ind2])
 
       return(ifelse(i == current_changepoint, dist_val/(len_cluster_ind_1*(len_cluster_ind_1-1)), dist_val/(len_cluster_ind_1*len_cluster_ind_2)))
     })
