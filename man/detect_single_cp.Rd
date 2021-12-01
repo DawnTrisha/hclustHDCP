@@ -4,7 +4,7 @@
 \alias{detect_single_cp}
 \title{Title}
 \usage{
-detect_single_cp(X, dist.method)
+detect_single_cp(X = NULL, D = NULL, dist.method = "average")
 }
 \arguments{
 \item{dist.method}{}
