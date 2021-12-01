@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-detect_single_cp = function(X, dist.method)
+detect_single_cp = function(X = NULL, D = NULL, dist.method = "average")
 {
   # Check if Distance matrix is supplied or not, if supplied
   if(is.null(D) == FALSE)
@@ -75,14 +75,14 @@ detect_single_cp = function(X, dist.method)
   })
 
     # detecting which clusters are closest
-    current_changepoint = which.min(distvec)
+    current_changepoint = which.min(link_dist)
 
     # Merging the clusters and storing the numbers from which only new clusters start
     trackclust_mat[j+1, ] = c(current_track[-(current_changepoint + 1)], 0)
   }
 
   # Detected single change-point
-  detect.single.cp = trackclust_mat[n, 1:2] - 1
+  detect.single.cp = trackclust_mat[n-1, 1:2] - 1
   detect.single.cp = detect.single.cp[detect.single.cp != 0]
 
   # Return detected single change-point location
