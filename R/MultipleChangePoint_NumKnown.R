@@ -38,7 +38,7 @@ detect_multiple_cp = function(X = NULL, D = NULL, numcp, dist.method = "average"
   n = nrow(dist_mat)
 
   # Compatibility check if numcp greater than 1 and less than n
-  if((numcp == 1) || (numcp == n))
+  if((numcp == 1) || (numcp >= n))
   {
     stop("Incorrect number of change-points to detect.")
   }
