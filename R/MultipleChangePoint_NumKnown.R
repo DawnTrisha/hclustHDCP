@@ -31,7 +31,7 @@ detect_multiple_cp = function(X = NULL, D = NULL, numcp, dist.method = "average"
     dist_mat = D
   }else{
     # Calculate distance matrix
-    dist_mat = as.matrix(dist(X), method = "euclidean")
+    dist_mat = as.matrix(stats::dist(X), method = "euclidean")
   }
 
   # Number of observations
