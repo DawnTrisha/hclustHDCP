@@ -18,6 +18,12 @@
 #' @examples
 detect_single_cp = function(X = NULL, D = NULL, dist.method = "average")
 {
+  # Check if either X or D is supplied or not
+  if((is.null(X) == TRUE) && (is.null(D) == TRUE))
+  {
+    stop("Supply either data matrix or distance matrix")
+  }
+
   # Check if Distance matrix is supplied or not, if supplied
   if(is.null(D) == FALSE)
   {
