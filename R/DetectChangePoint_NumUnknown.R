@@ -1,16 +1,16 @@
-#' Title
+#' Detecting change-point location(s) for unknown number of change-points
 #'
-#' @param X
-#' @param D
-#' @param d
-#' @param dist.method
-#' @param lambda
+#' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.
+#' @param D Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.
+#' @param p Dimension of the observations. Should be supplied if only distance matrix D is supplied.
+#' @param dist.method Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".
+#' @param lambda Penalty parameter. Default is 0.02.
 #'
-#' @return
+#' @return Returns a integer or a numeric vector denoting estimated change-point location(s) depending on single or multiple change-point(s) is/are detected.
 #' @export
 #'
 #' @examples
-detect_estimated_cp = function(X = NULL, D = NULL, d = NULL, dist.method = "average", lambda = 0.02)
+detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "average", lambda = 0.02)
 {
   # Check if either X or D is supplied or not
   if((is.null(X) == TRUE) && (is.null(D) == TRUE))
@@ -33,7 +33,7 @@ detect_estimated_cp = function(X = NULL, D = NULL, d = NULL, dist.method = "aver
     dist_mat = as.matrix(stats::dist(X), method = "euclidean")
 
     # Dimension of observations
-    d = ncol(X)
+    p = ncol(X)
   }
 
   # Number of observations
@@ -50,7 +50,7 @@ detect_estimated_cp = function(X = NULL, D = NULL, d = NULL, dist.method = "aver
   trackclust_mat[1, ] = 1:n
 
   # Calculating penalized dunn index at the first stage when number of clusters same as number of observations
-  penalized_dunn = c(-lambda * n * log(d), numeric(n - 1))
+  penalized_dunn = c(-lambda * n * log(p), numeric(n - 1))
 
   # Running entire loop till n - 1 (since desired number of clusters is estimated_cp + 1)
   for(j in 1:(n - 1))
@@ -128,8 +128,8 @@ detect_estimated_cp = function(X = NULL, D = NULL, d = NULL, dist.method = "aver
     # Denominator for the first term
     B_current_clust = ifelse(l > 1, min(dist_mat_copy[upper.tri(dist_mat_copy)]), B_current_clust)
 
-    # Using penalty function as (lambda * l * log(d))
-    penalized_dunn[j + 1] = (B_current_clust/W_current_clust) - (lambda * l * log(d))
+    # Using penalty function as (lambda * l * log(p))
+    penalized_dunn[j + 1] = (B_current_clust/W_current_clust) - (lambda * l * log(p))
   }
 
   # estimated number of clusters based on minimum penalized dunn index

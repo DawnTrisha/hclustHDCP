@@ -7,14 +7,14 @@
 
 # Output:
 # detectcp: Detected location vector for detected multiple change-points
-#' Title
+#' Detecting multiple change-point locations for known number of change-points
 #'
-#' @param X
-#' @param D
-#' @param numcp
-#' @param dist.method
+#' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.
+#' @param D Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.
+#' @param numcp Number of change-points to detect
+#' @param dist.method Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".
 #'
-#' @return
+#' @return Returns a numeric vector denoting estimated change-point locations
 #' @export
 #'
 #' @examples

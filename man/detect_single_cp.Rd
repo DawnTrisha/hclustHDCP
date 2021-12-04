@@ -2,7 +2,7 @@
 % Please edit documentation in R/SingleChangePoint.R
 \name{detect_single_cp}
 \alias{detect_single_cp}
-\title{Title}
+\title{Detecting single change-point}
 \usage{
 detect_single_cp(X = NULL, D = NULL, dist.method = "average")
 }
@@ -11,11 +11,11 @@ detect_single_cp(X = NULL, D = NULL, dist.method = "average")
 
 \item{D}{Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.}
 
-\item{dist.method}{Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. Default is average linkage.}
+\item{dist.method}{Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters.  This must be one of "single", "average" or "complete". Default is "average".}
 }
 \value{
 Returns integer value denoting estimated change-point location
 }
 \description{
-Title
+Detecting single change-point
 }

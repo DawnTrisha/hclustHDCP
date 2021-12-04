@@ -2,16 +2,22 @@
 % Please edit documentation in R/MultipleChangePoint_NumKnown.R
 \name{detect_multiple_cp}
 \alias{detect_multiple_cp}
-\title{Title}
+\title{Detecting multiple change-point locations for known number of change-points}
 \usage{
 detect_multiple_cp(X = NULL, D = NULL, numcp, dist.method = "average")
 }
 \arguments{
-\item{dist.method}{}
+\item{X}{Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.}
+
+\item{D}{Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.}
+
+\item{numcp}{Number of change-points to detect}
+
+\item{dist.method}{Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".}
 }
 \value{
-
+Returns a numeric vector denoting estimated change-point locations
 }
 \description{
-Title
+Detecting multiple change-point locations for known number of change-points
 }

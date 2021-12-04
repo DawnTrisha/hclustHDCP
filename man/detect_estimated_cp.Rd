@@ -2,22 +2,30 @@
 % Please edit documentation in R/DetectChangePoint_NumUnknown.R
 \name{detect_estimated_cp}
 \alias{detect_estimated_cp}
-\title{Title}
+\title{Detecting change-point location(s) for unknown number of change-points}
 \usage{
 detect_estimated_cp(
   X = NULL,
   D = NULL,
-  d = NULL,
+  p = NULL,
   dist.method = "average",
   lambda = 0.02
 )
 }
 \arguments{
-\item{lambda}{}
+\item{X}{Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.}
+
+\item{D}{Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.}
+
+\item{p}{Dimension of the observations. Should be supplied if only distance matrix D is supplied.}
+
+\item{dist.method}{Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".}
+
+\item{lambda}{Penalty parameter. Default is 0.02.}
 }
 \value{
-
+Returns a integer or a numeric vector denoting estimated change-point location(s) depending on single or multiple change-point(s) is/are detected.
 }
 \description{
-Title
+Detecting change-point location(s) for unknown number of change-points
 }
