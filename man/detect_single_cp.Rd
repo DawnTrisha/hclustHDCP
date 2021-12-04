@@ -7,10 +7,14 @@
 detect_single_cp(X = NULL, D = NULL, dist.method = "average")
 }
 \arguments{
-\item{dist.method}{}
+\item{X}{Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.}
+
+\item{D}{Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.}
+
+\item{dist.method}{Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. Default is average linkage.}
 }
 \value{
-
+Returns integer value denoting estimated change-point location
 }
 \description{
 Title

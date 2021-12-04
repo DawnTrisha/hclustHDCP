@@ -6,13 +6,14 @@
 
 # Output:
 # detectcp: Detected single change-point location
+
 #' Title
 #'
-#' @param X
-#' @param D
-#' @param dist.method
+#' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.
+#' @param D Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied.
+#' @param dist.method Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. Default is average linkage.
 #'
-#' @return
+#' @return Returns integer value denoting estimated change-point location
 #' @export
 #'
 #' @examples
