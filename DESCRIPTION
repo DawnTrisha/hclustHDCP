@@ -1,6 +1,6 @@
 Package: hclustHDCP
 Title: High Dimensional Change-point detection based on Hierarchical clustering 
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Trisha", "Dawn", , "trisha@stat.tamu.edu", role = c("aut", "cre"))
 Description: Change-point detection is a classical problem in statistics with 
