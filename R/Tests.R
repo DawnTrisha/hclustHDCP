@@ -33,6 +33,8 @@ X = rbind(X1, X2, X3)
 
 D = as.matrix(dist(X, method = "euclidean"))
 
+detect_estimated_cp(D = D, p = d)
+
 # Single change-point
 d = 5
 X1 = matrix(rnorm((5 * 5), mean = 0, sd = 1), nrow = 5, ncol = d)
@@ -40,3 +42,14 @@ X2 = matrix(rnorm((5 * 5), mean = 4, sd = 1), nrow = 5, ncol = d)
 X = rbind(X1, X2)
 
 D = as.matrix(dist(X, method = "euclidean"))
+
+
+# Check if MADD or gen MADD works
+X1 = matrix(rnorm((10*15), mean = 0, sd = 2), nrow = 10, ncol = 15)
+X2 = matrix(stats::rt(10*15, df = 4, ncp = 0),nrow = 10, ncol = 15)
+X = rbind(X1, X2)
+
+D = distmat_HDLSS(X = X, option = "genMADD")
+detect_single_cp(D = D)
+
+detect_estimated_cp(D = D, p = 15)
