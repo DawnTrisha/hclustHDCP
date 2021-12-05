@@ -30,7 +30,7 @@ detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "aver
     dist_mat = D
   }else{
     # Calculate distance matrix
-    dist_mat = as.matrix(stats::dist(X), method = "euclidean")
+    dist_mat = as.matrix(stats::dist(X, method = "euclidean"))
 
     # Dimension of observations
     p = ncol(X)
