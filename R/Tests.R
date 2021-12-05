@@ -53,3 +53,11 @@ D = distmat_HDLSS(X = X, option = "genMADD")
 detect_single_cp(D = D)
 
 detect_estimated_cp(D = D, p = 15)
+
+# Example in documentation for single chnage-point
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2)
+
+detect_single_cp(X = X)
+detect_single_cp(X = X, dist.method = "single")
