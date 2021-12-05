@@ -32,6 +32,7 @@ This package uses hierarchical clustering based on linkage methods to solve the 
 ```{r}
 # Generating data matrix having change-points at 8 and 16
 # Number of observations, n = 24 and dimension, p = 20
+set.seed(1)
 X1 = matrix(rnorm(8*20, mean = 0, sd = 1), nrow = 8, ncol = 20)
 X2 = matrix(rnorm(8*20, mean = 3, sd = 1), nrow = 8, ncol = 20)
 X3 = matrix(rnorm(8*20, mean = 6, sd = 1), nrow = 8, ncol = 20)
@@ -96,4 +97,74 @@ box()
 
 ```
 
-Clearly clustering can used for change-point detection as illustrated through the above example. However, if instead of the previous example, if we consider that there 
+Clearly clustering can be used for change-point detection as illustrated through the above example. However, if instead of the previous example, we consider that there are same change in location for the observations but now there is only interval change. Specifically, we consider total $24$ observations among which first $8$ observations come from $N_{20}(\mathbf{0}_{20},I_{20})$, next $8$ observations from $N_{20}(3\mathbf{1}_{20},I_{20})$ and the final $8$ observations again from $N_{20}(0\mathbf{1}_{20}, I_{20})$. Now the application of clustering algorithm directly yields the following result.
+
+```{r}
+# Generating Data with change-points at t = 8 and t = 16
+set.seed(1)
+X1 = matrix(rnorm(8*20, mean = 0, sd = 1), nrow = 8, ncol = 20)
+X2 = matrix(rnorm(8*20, mean = 3, sd = 1), nrow = 8, ncol = 20)
+X3 = matrix(rnorm(8*20, mean = 0, sd = 1), nrow = 8, ncol = 20)
+X = rbind(X1, X2, X3)
+
+# Extracting first PC
+X.pca  = prcomp(X, center = T, scale. = T)
+M = X.pca$x[ , 1]
+
+#par(mar=c(3.75,3.4,2,1),mgp=c(2.3,0.5,0),oma=c(0.5,0.5,0.5,0.5),mfrow=c(2,2))
+
+# Clusters obtained 
+cl = cutree(hclust(dist(X), method="average"), k=3)
+cl
+which(cl == 1)  # Observations in 1st cluster
+which(cl == 2)  # Observations in 2nd cluster
+which(cl == 3)  # Observations in 3rd cluster
+```
+```{r, echo=FALSE}
+z1 = as.vector(which(cl==1))
+z2 = as.vector(which(cl==2))
+z3 = as.vector(which(cl==3))
+y1 = NA
+y2 = NA
+y3 = NA
+y1[z1] = -8
+y2[z2] = -8
+y3[z3] = -8
+
+v1 = NA
+v2 = NA
+v3 = NA
+v1[z1] = M[z1]
+v2[z2] = M[z2]
+v3[z3] = M[z3]
+```
+
+```{r}
+plot(M, pch = 1, xlim = c(1,24), ylim = c(-8,8),
+     xlab = "t", ylab = expression(paste("PC"[1])),
+     axes = F,
+     frame.plot = F, main = expression(paste("(a) ", " Before Clustering")))
+axis(side = 1, at = c(1,8,16,24), tck = -0.03)
+axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
+box()
+
+plot(y1, pch = 16, xlim = c(1,24), ylim = c(-8,8),
+     xlab = "t", ylab = expression(paste("PC"[1])),
+     axes = F,
+     frame.plot = F, col = "red", main = expression(paste("(b) ", "Average Linkage")))
+axis(side = 1, at = c(1,8,16,24),tck = -0.03)
+axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
+points(y2, pch = 16, col = "blue")
+points(y3, pch = 16, col = "green")
+points(v1, pch = 16, col = "red")
+points(v2, pch = 16, col = "blue")
+points(v3, pch = 16, col = "green")
+box()
+```
+
+Clearly if we consider those points as change-point locations where the cluster membership changes for the observations, then we will not be able to detect change-point locations correctly. Hence we introduce consecutive clustering to detect the change-points. For the given example, using our algorithm, we get the following result.
+```{r}
+detect_multiple_cp(X = X, numcp = 2, dist.method = "average")
+```
+
+Hence we get the correct change-point locations when we use consecutive clustering. When the number of change-points are known, we can use **detect_single_cp** or **detect_multiple_cp** functions depending upon whether we want to detect a single change-point or multiple change-points.
