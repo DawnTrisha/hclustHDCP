@@ -26,5 +26,74 @@ In this vignette for the package **hclustHDCP** we will illustrate the importanc
 
 Change-point detection is a classical problem in statistics and machine learning which refers to detecting abrupt significant changes in the probability distribution of a sequence of observations arranged chronologically. There could be single change-point or multiple change-points in the sequence of observations where the observations may be univariate, multivariate, networks or even functional in nature. Clustering can be incorporated in an attempt to detect change-points because we can think of existence of clusters in the observation sequence based on the change-point locations. More precisely, if there is a change-point $1< \tau < n$ in an observed sequence of observations $\{x_1, x_2, \dots, x_n\}$, then there are two clusters, namely, $\{x_1, x_2, \dots, x_{\tau}\}$ and $\{x_{\tau + 1}, x_{\tau + 2}, \dots, x_n\}$. 
 
-This package uses hierarchical clustering based on linkage methods to solve the problem of finding change-point locations. The following example illustrates this. This example deals with two change-points for two dimensional normal observations differing in their location vector before and after change-points.   
+This package uses hierarchical clustering based on linkage methods to solve the problem of finding change-point locations. The following example illustrates how change-point detection can be viewed as clustering problem. This example deals with two change-points for $p = 20$ dimensional normal observations differing in their location vector before and after change-points. We consider total $24$ observations among which first $8$ observations come from $N_{20}(\mathbf{0}_{20},I_{20})$, next $8$ observations from $N_{20}(3\mathbf{1}_{20},I_{20})$ and the final $8$ observations from $N_{20}(6\mathbf{1}_{20}, I_{20})$. We use hierarchical clustering with average linkage which classifies the observations into three groups according to the occurrence of the change-points. Note that since observations are high dimensional, for easy visual interpretation we considered clustering the first principal component scores and plot based on those.  
 
+
+```{r}
+# Generating data matrix having change-points at 8 and 16
+# Number of observations, n = 24 and dimension, p = 20
+X1 = matrix(rnorm(8*20, mean = 0, sd = 1), nrow = 8, ncol = 20)
+X2 = matrix(rnorm(8*20, mean = 3, sd = 1), nrow = 8, ncol = 20)
+X3 = matrix(rnorm(8*20, mean = 6, sd = 1), nrow = 8, ncol = 20)
+X = rbind(X1, X2, X3)
+
+# Extracting first PC
+X.pca  = prcomp(X, center = T, scale. = T)
+M = X.pca$x[ , 1]
+
+
+
+# Performing hierarchical clustering 
+cl = cutree(hclust(dist(X), method="average"), k=3)
+# Observe we get exactly 3 clusters divided by the change-point locations 
+cl
+which(cl == 1)
+which(cl == 2)
+which(cl == 3)
+
+#par(mfrow = c(1, 2))
+# Plot of 1st PC of raw data arranged chronologically 
+plot(M, pch = 1, xlim = c(1,24), ylim = c(-8,8),
+     xlab = "t", ylab = expression(paste("PC"[1])), 
+     axes = F,
+     frame.plot = F, main = expression(paste("(a) ", " Before Clustering")))
+axis(side = 1, at = c(1,8,16,24), tck = -0.03)
+axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
+box()
+
+z1 = as.vector(which(cl == 1))
+z2 = as.vector(which(cl == 2))
+z3 = as.vector(which(cl == 3))
+y1 = NA
+y2 = NA
+y3 = NA
+y1[z1] = -8
+y2[z2] = -8
+y3[z3] = -8
+
+v1 = NA
+v2 = NA
+v3 = NA
+v1[z1] = M[z1]
+v2[z2] = M[z2]
+v3[z3] = M[z3]
+
+
+# Plot of 1st PC after clustering (clusters are denoted by red, blue and green)
+plot(y1, pch = 16, xlim = c(1,24), ylim = c(-8,8),
+     xlab = "t", ylab = expression(paste("PC"[1])), 
+     axes = F,
+     frame.plot = F, col = "red", main = expression(paste("(b) ", "Average Linkage")))
+axis(side = 1, at = c(1,8,16,24),tck = -0.03)
+axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
+points(y2, pch = 16, col = "blue")
+points(y3, pch = 16, col = "green")
+points(v1, pch = 16, col = "red")
+points(v2, pch = 16, col = "blue")
+points(v3, pch = 16, col = "green")
+box()
+
+
+```
+
+Clearly clustering can used for change-point detection as illustrated through the above example. However, if instead of the previous example, if we consider that there 
