@@ -17,6 +17,28 @@
 #' @export
 #'
 #' @examples
+#' # Example 1
+#' set.seed(1)
+#' # Generate data matrix
+#' X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+#' X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
+#' X = rbind(X1, X2)
+#'
+#' detect_single_cp(X = X)  # Detect single change-point with default average linkage
+#' detect_single_cp(X = X, dist.method = "single") # Detect single change-point with single linkage
+#'
+#' # Example 2
+#' X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+#' X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
+#' X = rbind(X1, X2)
+#'
+#' # Calculate distance matrix
+#' D_mat = as.matrix(stats::dist(X, method = "euclidean"))
+#' # Only distance matrix is supplied
+#' # Detect single change-point with default average linkage
+#' detect_single_cp(D = D_mat)
+#' # Detect single change-point with complete linkage
+#' detect_single_cp(D = D_mat, dist.method = "complete")
 detect_single_cp = function(X = NULL, D = NULL, dist.method = "average")
 {
   # Check if either X or D is supplied or not
@@ -37,7 +59,7 @@ detect_single_cp = function(X = NULL, D = NULL, dist.method = "average")
     dist_mat = D
   }else{
     # Calculate distance matrix
-    dist_mat = as.matrix(stats::dist(X), method = "euclidean")
+    dist_mat = as.matrix(stats::dist(X, method = "euclidean"))
   }
 
   # Number of observations
