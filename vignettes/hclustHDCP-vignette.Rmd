@@ -168,4 +168,27 @@ Clearly if we consider those points as change-point locations where the cluster 
 detect_multiple_cp(X = X, numcp = 2, dist.method = "average")
 ```
 
-Hence we get the correct change-point locations when we use consecutive clustering. When the number of change-points are known, we can use **detect_single_cp** or **detect_multiple_cp** functions depending upon whether we want to detect a single change-point or multiple change-points.
+Hence we get the correct change-point locations when we use consecutive clustering. When the number of change-points are known, we can use **detect_single_cp** or **detect_multiple_cp** functions depending upon whether we want to detect a single change-point or multiple change-points. Here are two examples illustrating the use of those two functions. 
+
+**Single Change-point detection**
+
+Consider $n = 30$ observations of dimension $p = 150$ (high dimensional low sample size setup) arranged chronologically. We consider that first $10$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$ and the remaining $20$ observations are from $N_{150}(\mathbf{1}_{150}, \mathbf{I}_{150})$. Hence in this example, the change occurs as change in location and we also consider that we know there is *only one change-point*.
+
+```{r}
+# Example 1  
+set.seed(1)
+# Generating data, n = 30, p = 150, change-point location at 10
+X1 = matrix(rnorm(10 * 150, mean = 0, sd = 1), nrow = 10, ncol = 150)
+X2 = matrix(rnorm(20 * 150, mean = 1, sd = 1), nrow = 20, ncol = 150)
+X = rbind(X1, X2)
+
+# Finding change-point location using complete linkage 
+detect_single_cp(X = X, dist.method = "complete")
+
+# We could also supply the distance matrix instead of data matrix
+D_mat = as.matrix(stats::dist(X, method = "euclidean"))
+
+detect_single_cp(D = D_mat, dist.method = "complete")
+```
+
+Observe that we get the same result in both cases. Here the true change-point is not at the middle of the time sequence and we used complete linkage. 
