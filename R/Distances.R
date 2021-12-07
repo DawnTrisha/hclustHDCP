@@ -141,6 +141,22 @@ genMADD_distmat = function(X)
 # To construct distance matrix using MADD or generalized MADD
 # MADD distance or Generalized MADD distance matrix to accommodate change in
 # higher order marginals in High Dimensional Low Sample Size (HDLSS) situation
+#' Distance Matrix Calculation using genMADD or MADD distance
+#'
+#' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector.
+#' @param option Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD".
+#'
+#' @return Returns a (n X n) matrix containing the distance between the observations.
+#' @export
+#'
+#' @examples
+#' set.seed(1)
+#' # Generating n = 10 observations from t distribution with dimension p = 5
+#' X = matrix(stats::rt((10*5), ncp = 0, df = 4), nrow = 10, ncol = 5)
+#'
+#' # Distance matrix
+#' D_mat1 = distmat_HDLSS(X = X) # using default generalized MADD distance ("genMADD")
+#' D_mat2 = distmat_HDLSS(X = X, option = "MADD") # using MADD distance ("MADD")
 distmat_HDLSS = function(X, option = c("genMADD","MADD"))
 {
   option = match.arg(option)
