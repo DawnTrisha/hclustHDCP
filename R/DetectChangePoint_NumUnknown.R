@@ -10,6 +10,34 @@
 #' @export
 #'
 #' @examples
+#'  # Example 1
+#' set.seed(1)
+#' # Generate data matrix
+#' X1 = matrix(rnorm((15 * 200), mean = 0, sd = 1), nrow = 15, ncol = 200)
+#' X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
+#' X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
+#' X = rbind(X1, X2, X3)
+#'
+#'  # Detect change-points with default average linkage
+#' detect_estimated_cp(X = X)
+#'
+#' # Detect change-points with complete linkage
+#' detect_estimated_cp(X = X, dist.method = "complete")
+#'
+#' # Example 2
+#' set.seed(1)
+#' # Generate data matrix
+#' X1 = matrix(rnorm((15 * 200), mean = 0, sd = 1), nrow = 15, ncol = 200)
+#' X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
+#' X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
+#' X = rbind(X1, X2, X3)
+#'
+#' # Calculate distance matrix
+#' D_mat = as.matrix(stats::dist(X, method = "euclidean"))
+#'
+#' # Only distance matrix is supplied
+#' # Detect multiple change-points
+#' detect_estimated_cp(D = D_mat, p = 200)  # correct change-points are detected
 detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "average", lambda = 0.02)
 {
   # Check if either X or D is supplied or not
@@ -132,7 +160,7 @@ detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "aver
     penalized_dunn[j + 1] = (B_current_clust/W_current_clust) - (lambda * l * log(p))
   }
 
-  # estimated number of clusters based on minimum penalized dunn index
+  # estimated number of clusters based on maximum penalized dunn index
   estimated.clust = which.max(penalized_dunn)
 
   # Estimated change-point locations based estimated clusters based on penalized dunn index

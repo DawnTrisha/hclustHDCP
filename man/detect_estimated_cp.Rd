@@ -29,3 +29,33 @@ Returns a integer or a numeric vector denoting estimated change-point location(s
 \description{
 Detecting change-point location(s) for unknown number of change-points
 }
+\examples{
+ # Example 1
+set.seed(1)
+# Generate data matrix
+X1 = matrix(rnorm((15 * 200), mean = 0, sd = 1), nrow = 15, ncol = 200)
+X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
+X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
+X = rbind(X1, X2, X3)
+
+ # Detect change-points with default average linkage
+detect_estimated_cp(X = X)
+
+# Detect change-points with complete linkage
+detect_estimated_cp(X = X, dist.method = "complete")
+
+# Example 2
+set.seed(1)
+# Generate data matrix
+X1 = matrix(rnorm((15 * 200), mean = 0, sd = 1), nrow = 15, ncol = 200)
+X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
+X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
+X = rbind(X1, X2, X3)
+
+# Calculate distance matrix
+D_mat = as.matrix(stats::dist(X, method = "euclidean"))
+
+# Only distance matrix is supplied
+# Detect multiple change-points
+detect_estimated_cp(D = D_mat, p = 200)  # correct change-points are detected
+}
