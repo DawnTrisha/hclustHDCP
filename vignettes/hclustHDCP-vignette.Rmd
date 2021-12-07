@@ -217,4 +217,6 @@ detect_multiple_cp(X = X, numcp = 2)
 detect_multiple_cp(X = X, numcp = 4, dist.method = "single")
 ```
 
-We observe that the correct change-point locations are obtained when *numcp* is supplied as $2$. However, if we do not have knowledge about the number of change-points to detect, then we will obtain incorrect change-point locations. In reality almost every situation requires first the estimation of number of change-point then estimation of change-point locations.  
+We observe that the correct change-point locations are obtained when *numcp* is supplied as $2$. However, if we do not have knowledge about the number of change-points to detect, then we will obtain incorrect change-point locations. In reality almost every situation requires first the estimation of number of change-point then estimation of change-point locations. 
+
+In order to address this problem we implemented cluster evaluation methods namely penalized Dunn index to estimate optimal number of clusters present in the data.
