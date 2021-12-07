@@ -133,17 +133,17 @@
 # detect_multiple_cp(X = X, numcp = 2)
 
 # Example 1 - single change-point
-X1 = matrix(rnorm(10 * 150, mean = 0, sd = 1), nrow = 10, ncol = 150)
-X2 = matrix(rnorm(20 * 150, mean = 1, sd = 1), nrow = 20, ncol = 150)
-X = rbind(X1, X2)
-
-detect_single_cp(X = X, dist.method = "complete")
-
-# Example 2 - Multiple change-point
-X1 = matrix(rnorm(10 * 150, mean = 0, sd = 1), nrow = 10, ncol = 150)
-X2 = matrix(rnorm(10 * 150, mean = 5, sd = 1), nrow = 10, ncol = 150)
-X3 = matrix(rnorm(10 * 150, mean = 0.2, sd = 1), nrow = 10, ncol = 150)
-X = rbind(X1, X2, X3)
-
-detect_multiple_cp(X = X, numcp = 2)
+# X1 = matrix(rnorm(10 * 150, mean = 0, sd = 1), nrow = 10, ncol = 150)
+# X2 = matrix(rnorm(20 * 150, mean = 1, sd = 1), nrow = 20, ncol = 150)
+# X = rbind(X1, X2)
+#
+# detect_single_cp(X = X, dist.method = "complete")
+#
+# # Example 2 - Multiple change-point
+# X1 = matrix(rnorm(10 * 150, mean = 0, sd = 1), nrow = 10, ncol = 150)
+# X2 = matrix(rnorm(10 * 150, mean = 5, sd = 1), nrow = 10, ncol = 150)
+# X3 = matrix(rnorm(10 * 150, mean = 0.2, sd = 1), nrow = 10, ncol = 150)
+# X = rbind(X1, X2, X3)
+#
+# detect_multiple_cp(X = X, numcp = 2)
 

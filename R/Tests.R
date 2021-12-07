@@ -61,3 +61,29 @@ X = rbind(X1, X2)
 
 detect_single_cp(X = X)
 detect_single_cp(X = X, dist.method = "single")
+
+# Example in documentation for single chnage-point
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 1, sd = 1), nrow = 15, ncol = 50)
+X3 = matrix(rnorm((15 * 50), mean = 2, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2, X3)
+
+detect_multiple_cp(X = X, numcp = 2)
+detect_multiple_cp(X = X, numcp = 4, dist.method = "complete")
+
+
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 1, sd = 1), nrow = 15, ncol = 50)
+X3 = matrix(rnorm((15 * 50), mean = 2, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2, X3)
+
+detect_multiple_cp(X = X, numcp = 2)
+detect_multiple_cp(X = X, numcp = 4, dist.method = "complete")
+
+X1 = matrix(rnorm((15 * 200), mean = 0, sd = 1), nrow = 15, ncol = 200)
+X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
+X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
+X = rbind(X1, X2, X3)
+
+detect_estimated_cp(X = X)
+detect_estimated_cp(X = X, dist.method = "complete")
