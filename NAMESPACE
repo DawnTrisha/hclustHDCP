@@ -3,3 +3,4 @@
 export(detect_estimated_cp)
 export(detect_multiple_cp)
 export(detect_single_cp)
+export(distmat_HDLSS)
