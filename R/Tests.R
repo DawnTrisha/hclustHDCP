@@ -87,3 +87,7 @@ X = rbind(X1, X2, X3)
 
 detect_estimated_cp(X = X)
 detect_estimated_cp(X = X, dist.method = "complete")
+
+##########
+# Example for distance matrix
+X = matrix(stats::rt((10*5), ncp = 0, df = 4), nrow = 10, ncol = 5)
