@@ -91,3 +91,25 @@ detect_estimated_cp(X = X, dist.method = "complete")
 ##########
 # Example for distance matrix
 X = matrix(stats::rt((10*5), ncp = 0, df = 4), nrow = 10, ncol = 5)
+
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 1, sd = 1), nrow = 15, ncol = 50)
+X3 = matrix(rnorm((15 * 50), mean = 2, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2, X3)
+
+detect_estimated_cp(X = X)
+
+X1 = matrix(rnorm((15 * 150), mean = 0, sd = 1), nrow = 15, ncol = 150)
+X2 = matrix(rnorm((15 * 150), mean = 5, sd = 1), nrow = 15, ncol = 150)
+X3 = matrix(rnorm((15 * 150), mean = 10, sd = 1), nrow = 15, ncol = 150)
+X = rbind(X1, X2, X3)
+
+detect_estimated_cp(X = X, dist.method = "single", lambda = 0.0005)
+detect_estimated_cp(X = X, dist.method = "average", lambda = 0.015)
+detect_estimated_cp(X = X, dist.method = "complete",  lambda = 0.015)
+
+
+dist_mat = as.matrix(stats::dist(X))
+
+detect_estimated_cp(D = dist_mat, p = 40)
+
