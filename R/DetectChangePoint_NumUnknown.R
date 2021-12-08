@@ -164,7 +164,14 @@ detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "aver
   estimated.clust = which.max(penalized_dunn)
 
   # Estimated change-point locations based estimated clusters based on penalized dunn index
-  detect.cp = trackclust_mat[estimated.clust, 2:(n - estimated.clust + 1)] - 1
+  if(estimated.clust == n) #if no change-point is detected
+  {
+    # then returns the last observation number
+    detect.cp = n
+  }else{
+    # else returns the location of the change-point
+    detect.cp = trackclust_mat[estimated.clust, 2:(n - estimated.clust + 1)] - 1
+  }
 
   # Returning estimated change-point locations
   return(detect.cp)
