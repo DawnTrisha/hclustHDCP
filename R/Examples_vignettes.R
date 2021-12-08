@@ -155,3 +155,15 @@
 #
 # detect_estimated_cp(X = X)
 
+
+set.seed(0)
+X1 = matrix(rnorm(15 * 200, mean = 0, sd = 1), nrow = 15, ncol = 200)
+X2 = matrix(rnorm(15 * 200, mean = 0, sd = 1.5), nrow = 15, ncol = 200)
+X3 = matrix(rnorm(15 * 200, mean = 0, sd = 2), nrow = 15, ncol = 200)
+X = rbind(X1, X2, X3)
+
+detect_estimated_cp(X = X)
+
+D_mat = distmat_HDLSS(X = X, option = "MADD")
+
+detect_estimated_cp(D = D_mat, p = 200)
