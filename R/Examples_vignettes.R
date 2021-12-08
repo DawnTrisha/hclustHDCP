@@ -156,14 +156,26 @@
 # detect_estimated_cp(X = X)
 
 
-set.seed(0)
-X1 = matrix(rnorm(15 * 200, mean = 0, sd = 1), nrow = 15, ncol = 200)
-X2 = matrix(rnorm(15 * 200, mean = 0, sd = 1.5), nrow = 15, ncol = 200)
-X3 = matrix(rnorm(15 * 200, mean = 0, sd = 2), nrow = 15, ncol = 200)
-X = rbind(X1, X2, X3)
-
-detect_estimated_cp(X = X)
-
-D_mat = distmat_HDLSS(X = X, option = "MADD")
-
-detect_estimated_cp(D = D_mat, p = 200)
+# set.seed(0)
+# X1 = matrix(rnorm(15 * 200, mean = 0, sd = 1), nrow = 15, ncol = 200)
+# X2 = matrix(rnorm(15 * 200, mean = 0, sd = 1.5), nrow = 15, ncol = 200)
+# X3 = matrix(rnorm(15 * 200, mean = 0, sd = 2), nrow = 15, ncol = 200)
+# X = rbind(X1, X2, X3)
+#
+# detect_estimated_cp(X = X)
+#
+# D_mat = distmat_HDLSS(X = X, option = "MADD")
+#
+# detect_estimated_cp(D = D_mat, p = 200)
+#
+# set.seed(1)
+# X1 = matrix(rnorm((15 * 250), mean = 0, sd = 2), nrow = 15, ncol = 250)
+# X2 = matrix(rt((15 * 250), ncp = 0, df = 4), nrow = 15, ncol = 250)
+# X = rbind(X1, X2)
+#
+# D1_mat = distmat_HDLSS(X = X, option = "MADD")
+#
+# D2_mat = distmat_HDLSS(X = X, option = "genMADD")
+#
+# detect_estimated_cp(D = D1_mat, p = 250)
+# detect_estimated_cp(D = D2_mat, p = 250)
