@@ -193,6 +193,8 @@ detect_single_cp(D = D_mat, dist.method = "complete")
 
 Observe that we get the same result in both cases. Here the true change-point is not at the middle of the time sequence and we used complete linkage. 
 
+**Multiple Change-point detection**
+
 Now we illustrate the use of function **detect_multiple_cp**. Here we again consider change in normal locations for a total of $n = 30$ observations having dimension $p = 150$. The first $10$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $10$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $10$ observations from $N_{150}(\mathbf{0.2}_{150}, \mathbf{I}_{150})$. We note that although here the observations are coming from different distributions, the mean of the observations from the first cluster $(x_1,\dots,x_{10})$ and last cluster $(x_21,\dots,x_{30})$   are very close. So here consecutive clustering works to detect the change-points when the number of change-points to detect is known as $2$.
 
 ```{r}
@@ -219,4 +221,28 @@ detect_multiple_cp(X = X, numcp = 4, dist.method = "single")
 
 We observe that the correct change-point locations are obtained when *numcp* is supplied as $2$. However, if we do not have knowledge about the number of change-points to detect, then we will obtain incorrect change-point locations. In reality almost every situation requires first the estimation of number of change-point then estimation of change-point locations. 
 
-In order to address this problem we implemented cluster evaluation methods namely penalized Dunn index to estimate optimal number of clusters present in the data.
+In order to address this problem we implemented cluster evaluation methods namely penalized Dunn index to estimate optimal number of clusters present in the data. Here is an example illustrating the use of the function. We again simulate from normal distribution where the first $15$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $15$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $10$ observations from $N_{150}(\mathbf{10}_{150}, \mathbf{I}_{150})$. 
+
+```{r}
+# Generating data matrix
+X1 = matrix(rnorm((15 * 150), mean = 0, sd = 1), nrow = 15, ncol = 150)
+X2 = matrix(rnorm((15 * 150), mean = 5, sd = 1), nrow = 15, ncol = 150)
+X3 = matrix(rnorm((15 * 150), mean = 10, sd = 1), nrow = 15, ncol = 150)
+X = rbind(X1, X2, X3)
+
+# Detecting change-points
+detect_estimated_cp(X = X, dist.method = "single", lambda = 0.001)
+detect_estimated_cp(X = X, dist.method = "average")
+detect_estimated_cp(X = X, dist.method = "complete")
+```
+
+Here we note some points. **First**, we could have supplied just the distance matrix calculated beforehand and not supply the original data matrix. But in that case we need to supply correct dimension of the observations in order to get good result. **Second**, for estimating the number of change-points, we have used penalized Dunn index which depends on penalty parameter $\lambda$. Here the default $\lambda = 0.02$ is supplied based on the best performance obtained from empirical studies. **Third**, we have used penalized version of Dunn index because the dunn index alone cannot detect the presence of a single cluster in the data (i.e. if there is no change-point). The following example illustrates that,
+
+```{r}
+# Genearate data with no change-points
+X = matrix(rnorm((20 * 150), mean = 0, sd = 1), nrow = 20, ncol = 150)
+
+detect_estimated_cp(X = X)
+```
+
+We observe that it returned the location of the last observation ($t = 20$) because no points are detected. Hence one of the advantages of the proposed algorithm is that it is able to **perform well when there is no change-point**. This guards against false detection. Moreover, this algorithm is **computationally less extensive in detecting multiple change-points** because it does not use partition methods to search for change-points each time. This enables the user to find the change-point locations in one go **without explicit need to perform hypothesis testing** for the potential change-point locations.   
