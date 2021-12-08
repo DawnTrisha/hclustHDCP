@@ -54,6 +54,11 @@ detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "aver
       stop("Incorrect supplied distance matrix")
     }
 
+    if(is.null(p) == TRUE)
+    {
+      stop("Supply dimension of the observations")
+    }
+
     # Distance matrix
     dist_mat = D
   }else{
