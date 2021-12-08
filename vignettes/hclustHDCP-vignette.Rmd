@@ -221,7 +221,7 @@ detect_multiple_cp(X = X, numcp = 4, dist.method = "single")
 
 We observe that the correct change-point locations are obtained when *numcp* is supplied as $2$. However, if we do not have knowledge about the number of change-points to detect, then we will obtain incorrect change-point locations. In reality almost every situation requires first the estimation of number of change-point then estimation of change-point locations. 
 
-In order to address this problem we implemented cluster evaluation methods namely penalized Dunn index to estimate optimal number of clusters present in the data. Here is an example illustrating the use of the function. We again simulate from normal distribution where the first $15$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $15$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $10$ observations from $N_{150}(\mathbf{10}_{150}, \mathbf{I}_{150})$. 
+In order to address this problem we implemented cluster evaluation methods namely penalized Dunn index to estimate optimal number of clusters present in the data. Here is an example illustrating the use of the function. We again simulate from normal distribution where the first $15$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $15$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $15$ observations from $N_{150}(\mathbf{10}_{150}, \mathbf{I}_{150})$. 
 
 ```{r}
 # Generating data matrix
@@ -245,4 +245,32 @@ X = matrix(rnorm((20 * 150), mean = 0, sd = 1), nrow = 20, ncol = 150)
 detect_estimated_cp(X = X)
 ```
 
-We observe that it returned the location of the last observation ($t = 20$) because no points are detected. Hence one of the advantages of the proposed algorithm is that it is able to **perform well when there is no change-point**. This guards against false detection. Moreover, this algorithm is **computationally less extensive in detecting multiple change-points** because it does not use partition methods to search for change-points each time. This enables the user to find the change-point locations in one go **without explicit need to perform hypothesis testing** for the potential change-point locations.   
+We observe that it returned the location of the last observation ($t = 20$) because no points are detected. Hence one of the advantages of the proposed algorithm is that it is able to **perform well when there is no change-point**. This guards against false detection. Moreover, this algorithm is **computationally less extensive in detecting multiple change-points** because it does not use partition methods to search for change-points each time. This enables the user to find the change-point locations in one go **without explicit need to perform hypothesis testing** for the potential change-point locations.  
+
+Now we consider another example where first $15$ observations are from $N_{200}(\mathbf{0}_{200}, \mathbf{I}_{200})$, next $15$ observations are from $N_{200}(\mathbf{0}_{200}, 1.5\mathbf{I}_{200})$ and the last $15$ observations from $N_{200}(\mathbf{0}_{200}, 2\mathbf{I}_{200})$. Here the observations differ in their scale not in their location. If we try to use our method using the Euclidean distance in the linkage methods, then we obtain the following result.
+
+```{r}
+set.seed(0)
+# Generating data
+X1 = matrix(rnorm(15 * 200, mean = 0, sd = 1), nrow = 15, ncol = 200)
+X2 = matrix(rnorm(15 * 200, mean = 0, sd = 1.5), nrow = 15, ncol = 200)
+X3 = matrix(rnorm(15 * 200, mean = 0, sd = 2), nrow = 15, ncol = 200)
+X = rbind(X1, X2, X3)
+
+# Detecting change-point with Euclidean distance in linkage methods
+detect_estimated_cp(X = X)
+```
+
+The result suggests it is unable to detect the change-points because it returned the $t = 45$ (last observation number). Now we introduce the **mean absolute deviation of distance (MADD)** between $x_i$ and $x_j$ from $n$ observations $x_1, x_2, \cdots, x_n$, which is defined as,
+$$ \rho_0(x_i,x_j) = \frac{1}{(n-2)}\sum_{k = 1, k \neq i,j}^n p^{-\frac{1}{2}}\left|\|x_i-x_k\| - \|x_j-x_k\| \right| $$ 
+where $\|\,.\,\|$ denotes the usual Euclidean distance. Using MADD distance to construct the distance matrix we obtain the following result,
+
+```{r}
+# Calculate distance matrix (using MADD)
+D_mat = distmat_HDLSS(X = X, option = "MADD")
+
+# Supply distance matrix and the dimension of the observations in the function
+detect_estimated_cp(D = D_mat, p = 200)
+```
+
+We note that, the successful detection of change-point is possible here because the neighbourhood structure is retained when we use MADD distance in linkage methods. However, when using usual Euclidean distance, we can prove theoretically that for large $p$, observation from all three classes (for this example, class 1: observation no. 1-15, class 2: observation no. 16-30 and class 3: observation no. 31-45), will find their neighbour from class 1 with a very high probability. As a result, starting with the merging of the first class observations, the second class observations will get merged with the existing cluster of the first class observations and subsequently the third class observations will join. We have illustrated using a single run but simulations with more iterations show encouraging results.    
