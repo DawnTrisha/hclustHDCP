@@ -273,11 +273,37 @@ D_mat = distmat_HDLSS(X = X, option = "MADD")
 detect_estimated_cp(D = D_mat, p = 200)
 ```
 
-We note that, the successful detection of change-point is possible here because the neighbourhood structure is retained when we use MADD distance in linkage methods. However, when using usual Euclidean distance, we can prove theoretically (also empirically) that for large $p$, observation from all three classes (for this example, class 1: observation no. 1-15, class 2: observation no. 16-30 and class 3: observation no. 31-45), will find their neighbour from class 1 with a very high probability. As a result, starting with the merging of the first class observations, the second class observations will get merged with the existing cluster of the first class observations and subsequently the third class observations will join. We have illustrated using a single run but simulations with more iterations also show encouraging results. 
+We note that, the successful detection of change-point is possible here because the neighbourhood structure is retained in high dimension when we use MADD distance in linkage methods. However, when using usual Euclidean distance, we can prove theoretically (also empirically) that for large $p$, observation from all three classes (for this example, class 1: observation no. 1-15, class 2: observation no. 16-30 and class 3: observation no. 31-45), will find their neighbour from class 1 with a very high probability. As a result, starting with the merging of the first class observations, the second class observations will get merged with the existing cluster of the first class observations and subsequently the third class observations will join. We have illustrated using a single run but simulations with more iterations also show encouraging results. 
 
 Now we consider another example to illustrate the utility of generalized MADD distance. The generalized MADD dissimilarity measure between two observations $x_i$ and $x_j$, from a set of $n$ observations $\{x_1, \cdots, x_n\}$ is defined as,
 $$ \rho_{h,\psi} \left( x_i,x_j\right) =  \frac{1}{n-2} \sum_{k=1,k \neq j}^n \left| \phi_{h,\psi} (x_i,x_k) - \phi_{h,\psi} (x_j,x_k) \right| $$
 where the class of distance function involves $h$ and $\psi$ which are monotonically increasing continuous with $h(0)=\psi(0)=0$ and 
 
 $$ \phi_{h,\psi} (x_i,x_j) = h \left[ \frac{1}{d} \sum_{q = 1}^d \psi \left(\left(x^{(q)}_i - x^{(q)}_j \right)^2 \right)\right] $$
-One can consider several choices of $h$ and $\psi$ to cater a large number of distance functions. Using $h(t) = \sqrt{t}$ and $\psi(t) = t^2$, we arrive at the usual MADD dissimilarity $\rho_0$. For our example, we consider $h(t) = t$ and $\psi(t) = 1 - e^{-\sqrt{t}}$.
+One can consider several choices of $h$ and $\psi$ to cater a large number of distance functions. Using $h(t) = \sqrt{t}$ and $\psi(t) = t^2$, we arrive at the usual MADD dissimilarity $\rho_0$. For our example, we consider $h(t) = t$ and $\psi(t) = 1 - e^{-\sqrt{t}}$. In this example, the first $15$ observations are generated from $250$ dimensional normal distribution with mean $0_{250}$ and variance $2\mathbf{I}_{250}$. The next $15$ observations are generated from $t$ distribution. Each of the co-ordinates of the $250$ dimensional observations is $t$ distribution with $df = 4$. We have considered the example in such a way that there is no difference in location and scale but the difference is in higher order marginals. The following results are obtained,      
+
+```{r}
+set.seed(1)
+# Generating data
+X1 = matrix(rnorm((15 * 250), mean = 0, sd = 2), nrow = 15, ncol = 250)
+X2 = matrix(rt((15 * 250), ncp = 0, df = 4), nrow = 15, ncol = 250)
+X = rbind(X1, X2)
+
+# Detecting change-point using Euclidean distance 
+detect_estimated_cp(X = X)
+
+# Calculating distance matrix with MADD distance
+D1_mat = distmat_HDLSS(X = X, option = "MADD")
+
+# Calculating distance matrix with genMADD distance
+D2_mat = distmat_HDLSS(X = X, option = "genMADD")
+
+# Detecting change-point using MADD distance 
+detect_estimated_cp(D = D1_mat, p = 250)
+# Detecting change-point using genMADD distance 
+detect_estimated_cp(D = D2_mat, p = 250)
+```
+
+We observe that, the change-point is not detected when Euclidean distance is used in the algorithm. However, we detected change-point as $20$ when MADD distance is used to construct the distance matrix. But this is not the true change-point. Then we used generalized MADD to construct the distance matrix and this successfully detected the change-point. The MADD distance did not work here because to prove high dimensional consistency ($p \rightarrow \infty$), we need $p^{-1}\|\mu_{1} - \mu_{2}\|^2 \rightarrow \nu^2_{1,2} > 0$ and $p^{-1}tr(\Sigma_{i})\rightarrow \sigma^2_i$ where $\sigma^2_1 \neq \sigma^2_2$, $\mu_{1}, \mu_{2}$ (respectively, $\Sigma_1$, $\Sigma_2$) location (respectively, covariance matrices) for two distribution before and after the change-points. But here, for the last change-point example, we have difference only in higher order marginals. Hence we use generalized distance. 
+
+One can use any distance matrix in the algorithm, in the way illustrated. However, our simulation studies show that, using generalized MADD distance performs very well in detecting changes when we do not know if the change actually occurred in higher order marginals or not. 
