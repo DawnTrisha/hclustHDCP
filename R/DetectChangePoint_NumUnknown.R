@@ -105,7 +105,6 @@ detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "aver
       clust_index_2 = current_track[i+1]:(ifelse( i < l, current_track[i+2] - 1, n))
 
       # Distance between the two consecutive clusters
-
       if(dist.method == "single")
       {
         # return single linkage value
@@ -146,9 +145,19 @@ detect_estimated_cp = function(X = NULL, D = NULL, p = NULL, dist.method = "aver
       len_cluster_ind_2 = length(cluster_ind2)
 
       # Recalculating the distance matrix with updated clusters
-      dist_val = sum(dist_mat[cluster_ind1, cluster_ind2])
+      if(dist.method == "single")
+      {
+        dist_val = min(dist_mat[cluster_ind1, cluster_ind2])
+        return(dist_val)
+      }else if(dist.method == "average"){
+        dist_val = mean(dist_mat[cluster_ind1, cluster_ind2])
+        return(dist_val)
+        #return(ifelse(i == current_changepoint, dist_val/(len_cluster_ind_1*(len_cluster_ind_1-1)), dist_val/(len_cluster_ind_1*len_cluster_ind_2)))
+      }else{
+        dist_val = max(dist_mat[cluster_ind1, cluster_ind2])
+        return(dist_val)
+      }
 
-      return(ifelse(i == current_changepoint, dist_val/(len_cluster_ind_1*(len_cluster_ind_1-1)), dist_val/(len_cluster_ind_1*len_cluster_ind_2)))
     })
 
     # Updated distance matrix after clustering
