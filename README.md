@@ -22,25 +22,105 @@ change-points. Here we also implement the algorithm using a different
 distance function, called the mean absolute deviation of distances (MADD
 distance) instead of usual Euclidean distance while calculating the
 linkage methods. This enables the method to perform well in low sample
-size situations as well for most of the occasions.
+size situations as well for most of the occasions. Specifically when the
+changes in the observations are not in one dimensional marginal
+distributions and usual Euclidean distance fails to retain the
+neighbouhood structure of the observations.
 
 # Installation Instruction
 
 devtools::install\_github(“DawnTrisha/hclustHDCP”)
 
-# Remaining work
+# Use of the functions
 
-The following works listed need to be performed :
+As described earlier this package is intended to detect change-points
+specially in high dimensional low sample size regime when the changes
+are beyond mean change of the observations. There are four functions
+available.
 
-1.  Complete coding DetectChangePoint\_NumUnknown.R for detecting
-    change-point when the number of change-points to detect is *unknown*
+## detect\_single\_cp :
 
-2.  Code calculation of MADD distance and generalized MADD distance to
-    be used in the algorithm
+Detects single change-point in a data sequence arranged chronologically.
+Here are the points to consider while using the function
 
-3.  Make vignette
+-   The user need to enter either the data matrix (X) or the distance
+    matrix (D).
 
-4.  Complete documentation
+-   The function by default uses Euclidean distance to implement the
+    algorithm.
 
-5.  Time permitting add other cluster evaluation method for comparison
-    of performance
+-   If the one wants to use *genMADD distance* or *MADD distance*, use
+    *distmat\_HDLSS* function to first compute the distance matrix and
+    then supply the matrix to the function *detect\_single\_cp* (See
+    Example 2).
+
+``` r
+library(hclustHDCP)
+
+##### Example 1
+set.seed(1)
+##### Generate data matrix
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2)
+
+detect_single_cp(X = X)  # Detect single change-point with default average linkage
+```
+
+    ## [1] 15
+
+``` r
+detect_single_cp(X = X, dist.method = "single") # Detect single change-point with single linkage
+```
+
+    ## [1] 15
+
+``` r
+##### Example 2
+set.seed(1)
+##### Generate data matrix
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2)
+
+##### Distance matrix (MADD distance)
+D_mat = distmat_HDLSS(X = X, option = "MADD")
+
+detect_single_cp(D = D_mat, dist.method = "complete")  # Detect single change-point with MADD distance matrix and complete linkage
+```
+
+    ## [1] 15
+
+## detect\_multiple\_cp :
+
+Detects multiple change-points in a data sequence arranged
+chronologically. Here also we need to consider the same three points
+that we used for detect\_single\_cp function. Additionally we also need
+to supply the number of change-points to detect (1 &lt; numcp &lt; n).
+Here is an illustration.
+
+``` r
+##### Example 3
+set.seed(1)
+##### Generate data matrix
+X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
+X2 = matrix(rnorm((15 * 50), mean = 1, sd = 1), nrow = 15, ncol = 50)
+X3 = matrix(rnorm((15 * 50), mean = 2, sd = 1), nrow = 15, ncol = 50)
+X = rbind(X1, X2, X3)
+
+##### Detect two change-points with default average linkage
+detect_multiple_cp(X = X, numcp = 2)
+```
+
+    ## [1] 15 30
+
+``` r
+##### Distance matrix (genMADD distance)
+
+D_mat = distmat_HDLSS(X = X, option = "MADD")
+
+##### Detect two change-points with default average linkage
+detect_multiple_cp(D = D_mat, numcp = 2)
+```
+
+    ## [1] 15 30
