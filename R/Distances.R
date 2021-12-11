@@ -141,10 +141,10 @@ genMADD_distmat = function(X)
 # To construct distance matrix using MADD or generalized MADD
 # MADD distance or Generalized MADD distance matrix to accommodate change in
 # higher order marginals in High Dimensional Low Sample Size (HDLSS) situation
-#' Distance Matrix Calculation using genMADD or MADD distance
+#' Distance matrix calculation using Mean Absolute Deviation of Distances (genMADD or MADD distance)
 #'
 #' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector.
-#' @param option Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD".
+#' @param option Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD". For the exact mathematical form of the distance functions, refer to the vignette or \url{https://ieeexplore.ieee.org/document/8695805}
 #'
 #' @return Returns a (n X n) matrix containing the distance between the observations.
 #' @export

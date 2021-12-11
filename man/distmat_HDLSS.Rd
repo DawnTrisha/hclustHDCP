@@ -2,20 +2,20 @@
 % Please edit documentation in R/Distances.R
 \name{distmat_HDLSS}
 \alias{distmat_HDLSS}
-\title{Distance Matrix Calculation using genMADD or MADD distance}
+\title{Distance matrix calculation using Mean Absolute Deviation of Distances (genMADD or MADD distance)}
 \usage{
 distmat_HDLSS(X, option = c("genMADD", "MADD"))
 }
 \arguments{
 \item{X}{Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector.}
 
-\item{option}{Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD".}
+\item{option}{Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD". \url{https://ieeexplore.ieee.org/document/8695805}}
 }
 \value{
 Returns a (n X n) matrix containing the distance between the observations.
 }
 \description{
-Distance Matrix Calculation using genMADD or MADD distance
+Distance matrix calculation using Mean Absolute Deviation of Distances (genMADD or MADD distance)
 }
 \examples{
 set.seed(1)
