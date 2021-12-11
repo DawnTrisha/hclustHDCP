@@ -2,7 +2,7 @@
 #'
 #' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.
 #' @param D Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied. Default is the Euclidean distance to construct the distance matrix when data matrix is supplied.
-#' @param p Dimension of the observations. Should be supplied if only distance matrix D is supplied.
+#' @param p Dimension of the observations. Should be supplied if distance matrix D is supplied instead of data matrix X.
 #' @param dist.method Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".
 #' @param lambda Penalty parameter. Default is 0.02.
 #'

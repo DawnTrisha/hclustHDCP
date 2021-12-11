@@ -17,14 +17,14 @@ detect_estimated_cp(
 
 \item{D}{Distance matrix (n X n) corresponding to the data matrix. Either the data matrix or the distance matrix should be supplied. Default is the Euclidean distance to construct the distance matrix when data matrix is supplied.}
 
-\item{p}{Dimension of the observations. Should be supplied if only distance matrix D is supplied.}
+\item{p}{Dimension of the observations. Should be supplied if distance matrix D is supplied instead of data matrix X.}
 
 \item{dist.method}{Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".}
 
 \item{lambda}{Penalty parameter. Default is 0.02.}
 }
 \value{
-Returns a integer or a numeric vector denoting estimated change-point location(s) depending on single or multiple change-point(s) is/are detected.
+Returns a integer or a numeric vector denoting estimated change-point location(s) depending on single or multiple change-point(s) is/are detected. Returns the last observation number (time point) in case of non-detection.
 }
 \description{
 Detecting change-point location(s) for unknown number of change-points
