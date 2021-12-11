@@ -9,7 +9,7 @@ distmat_HDLSS(X, option = c("genMADD", "MADD"))
 \arguments{
 \item{X}{Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector.}
 
-\item{option}{Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD". \url{https://ieeexplore.ieee.org/document/8695805}}
+\item{option}{Distance function to use. Should be one of "genMADD" or "MADD". The default is "genMADD". For the exact mathematical form of the distance functions, refer to the vignette or \url{https://ieeexplore.ieee.org/document/8695805}}
 }
 \value{
 Returns a (n X n) matrix containing the distance between the observations.
