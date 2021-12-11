@@ -20,13 +20,21 @@ library(hclustHDCP)
 ```
 # Objective
 
-In this vignette for the package **hclustHDCP** we will illustrate the importance of the method and the use of the package.
+In this vignette for the package **hclustHDCP** we will illustrate the importance and advantages of the proposed method of change-point detection through clustering along with the use of the package.
+
+# Quick installation instruction
+
+devtools::install_github("DawnTrisha/hclustHDCP", build_vignettes = TRUE)
+
+One may also use,
+
+devtools::install_github("DawnTrisha/hclustHDCP", build_vignettes = TRUE, force = TRUE)
 
 # Introduction
 
-Change-point detection is a classical problem in statistics and machine learning which refers to detecting abrupt significant changes in the probability distribution of a sequence of observations arranged chronologically. There could be single change-point or multiple change-points in the sequence of observations where the observations may be univariate, multivariate, networks or even functional in nature. Clustering can be incorporated in an attempt to detect change-points because we can think of existence of clusters in the observation sequence based on the change-point locations. More precisely, if there is a change-point $1< \tau < n$ in an observed sequence of observations $\{x_1, x_2, \dots, x_n\}$, then there are two clusters, namely, $\{x_1, x_2, \dots, x_{\tau}\}$ and $\{x_{\tau + 1}, x_{\tau + 2}, \dots, x_n\}$. 
+Change-point detection is a classical problem in statistics and machine learning which refers to detecting abrupt significant changes in the probability distribution of a sequence of observations arranged chronologically. There could be single change-point or multiple change-points in the sequence of observations where the observations may be univariate, multivariate, networks or even functional in nature. Clustering can be incorporated in an attempt to detect change-points because we can think of existence of clusters in the observation sequence based on the change-point locations. More precisely, if there is a change-point $\tau$ $(1< \tau < n)$ in an observed sequence of observations $\{x_1, x_2, \dots, x_n\}$, then there are two clusters, namely, $\{x_1, x_2, \dots, x_{\tau}\}$ and $\{x_{\tau + 1}, x_{\tau + 2}, \dots, x_n\}$. 
 
-This package uses hierarchical clustering based on linkage methods to solve the problem of finding change-point locations. The following example illustrates how change-point detection can be viewed as clustering problem. This example deals with two change-points for $p = 20$ dimensional normal observations differing in their location vector before and after change-points. We consider total $24$ observations among which first $8$ observations come from $N_{20}(\mathbf{0}_{20},I_{20})$, next $8$ observations from $N_{20}(3\mathbf{1}_{20},I_{20})$ and the final $8$ observations from $N_{20}(6\mathbf{1}_{20}, I_{20})$. We use hierarchical clustering with average linkage which classifies the observations into three groups according to the occurrence of the change-points. Note that since observations are high dimensional, for easy visual interpretation we considered clustering the first principal component scores and plot based on those.  
+This package uses hierarchical clustering based on linkage methods to solve the problem of finding change-point locations. The following **example illustrates how change-point detection can be viewed as clustering problem**. This example deals with two change-points for $p = 20$ dimensional normal observations differing in their location vector before and after change-points. We consider total $24$ observations among which first $8$ observations come from $N_{20}(\mathbf{0}_{20},I_{20})$, next $8$ observations from $N_{20}(3\mathbf{1}_{20},I_{20})$ and the final $8$ observations from $N_{20}(6\mathbf{1}_{20}, I_{20})$. We use hierarchical clustering with average linkage which classifies the observations into three groups according to the occurrence of the change-points. Note that since observations are high dimensional, for easy visual interpretation we considered clustering the first principal component scores and plot time vs principal component.  
 
 
 ```{r}
@@ -41,8 +49,6 @@ X = rbind(X1, X2, X3)
 # Extracting first PC
 X.pca  = prcomp(X, center = T, scale. = T)
 M = X.pca$x[ , 1]
-
-
 
 # Performing hierarchical clustering 
 cl = cutree(hclust(dist(X), method="average"), k=3)
@@ -111,8 +117,6 @@ X = rbind(X1, X2, X3)
 X.pca  = prcomp(X, center = T, scale. = T)
 M = X.pca$x[ , 1]
 
-#par(mar=c(3.75,3.4,2,1),mgp=c(2.3,0.5,0),oma=c(0.5,0.5,0.5,0.5),mfrow=c(2,2))
-
 # Clusters obtained 
 cl = cutree(hclust(dist(X), method="average"), k=3)
 cl
@@ -141,6 +145,7 @@ v3[z3] = M[z3]
 
 ```{r, fig2, fig.height=3, fig.width=6, fig.align="center"}
 par(mfrow = c(1, 2))
+# Plot of 1st PC of raw data arranged chronologically 
 plot(M, pch = 1, xlim = c(1,24), ylim = c(-8,8),
      xlab = "t", ylab = expression(paste("PC"[1])),
      axes = F,
@@ -149,6 +154,7 @@ axis(side = 1, at = c(1,8,16,24), tck = -0.03)
 axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
 box()
 
+# Plot of 1st PC after clustering (clusters are denoted by red, blue and green)
 plot(y1, pch = 16, xlim = c(1,24), ylim = c(-8,8),
      xlab = "t", ylab = expression(paste("PC"[1])),
      axes = F,
@@ -163,16 +169,21 @@ points(v3, pch = 16, col = "green")
 box()
 ```
 
-Clearly if we consider those points as change-point locations where the cluster membership changes for the observations, then we will not be able to detect change-point locations correctly. Hence we introduce consecutive clustering to detect the change-points. For the given example, using our algorithm, we get the following result.
+Clearly if we consider those points as change-point locations where the cluster membership changes for the observations, then we will not be able to detect change-point locations correctly. Again if we consider the observations as clusters, then also they are not clustered according to the appearance of the change-points. Hence we introduce consecutive clustering to detect the change-points. For the given example, using our algorithm, we get the following result. 
+
+This example also illustrates the use of the function **detect_multiple_cp** where we supplied the data matrix X, no. of change-points to detect numcp, and the linkage to be used "average".
+
 ```{r}
 detect_multiple_cp(X = X, numcp = 2, dist.method = "average")
 ```
 
 Hence we get the correct change-point locations when we use consecutive clustering. When the number of change-points are known, we can use **detect_single_cp** or **detect_multiple_cp** functions depending upon whether we want to detect a single change-point or multiple change-points. Here are two examples illustrating the use of those two functions. 
 
-**Single Change-point detection**
+## Detecting change-point locations (number of change-points known)
 
-Consider $n = 30$ observations of dimension $p = 150$ (high dimensional low sample size setup) arranged chronologically. We consider that first $10$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$ and the remaining $20$ observations are from $N_{150}(\mathbf{1}_{150}, \mathbf{I}_{150})$. Hence in this example, the change occurs as change in location and we also consider that we know there is *only one change-point*.
+### Single Change-point detection (detect_single_cp)
+
+Consider $n = 30$ observations of dimension $p = 150$ (high dimensional low sample size setup) arranged chronologically. We consider that first $10$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$ and the remaining $20$ observations are from $N_{150}(\mathbf{1}_{150}, \mathbf{I}_{150})$. Hence in this example, the change occurs as change in location and we also consider that we know there is *only one change-point*. Here is an example on how to use the function.
 
 ```{r}
 # Example 1  
@@ -188,14 +199,15 @@ detect_single_cp(X = X, dist.method = "complete")
 # We could also supply the distance matrix instead of data matrix
 D_mat = as.matrix(stats::dist(X, method = "euclidean"))
 
+# Detected Change-point
 detect_single_cp(D = D_mat, dist.method = "complete")
 ```
 
-Observe that we get the same result in both cases. Here the true change-point is not at the middle of the time sequence and we used complete linkage. 
+Observe that we get the same result in both cases when the data matrix is supplied and when the distance matrix is supplied. The user needs to supply either the data matrix or the distance matrix. Here the true change-point is not at the middle of the time sequence and we used complete linkage. We note that, instead of the distance matrix based on usual Euclidean distance, one can supply any distance matrix constructed based on user defined distance functions as well. In this package we use two such distances which are illustrated later.  
 
-**Multiple Change-point detection**
+### Multiple Change-point detection (detect_multiple_cp)
 
-Now we illustrate the use of function **detect_multiple_cp**. Here we again consider change in normal locations for a total of $n = 30$ observations having dimension $p = 150$. The first $10$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $10$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $10$ observations from $N_{150}(\mathbf{0.2}_{150}, \mathbf{I}_{150})$. We note that although here the observations are coming from different distributions, the mean of the observations from the first cluster $(x_1,\dots,x_{10})$ and last cluster $(x_21,\dots,x_{30})$   are very close. So here consecutive clustering works to detect the change-points when the number of change-points to detect is known as $2$.
+Now we revisit the use of function **detect_multiple_cp**. Previously we illustrated this to show that consecutive clustering algoithm works. Here we again consider change in normal locations for a total of $n = 30$ observations having dimension $p = 150$. The first $10$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $10$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $10$ observations from $N_{150}(\mathbf{0.2}_{150}, \mathbf{I}_{150})$. We note that although here the observations are coming from different distributions, the mean of the observations from the first cluster $(x_1,\dots,x_{10})$ and last cluster $(x_{21},\dots,x_{30})$   are very close. So here consecutive clustering works to detect the change-points when the number of change-points to detect is known as $2$. Here is the illustration on the use of the function.
 
 ```{r}
 # Example 2  
@@ -212,18 +224,24 @@ detect_multiple_cp(X = X, numcp = 2)
 # We could also supply the distance matrix instead of data matrix
 D_mat = as.matrix(stats::dist(X, method = "euclidean"))
 
-detect_multiple_cp(X = X, numcp = 2)
+detect_multiple_cp(D = D_mat, numcp = 2)
 
 # We could also supply any number of change-points to detect (1 < numcp < n)
 # Finding change-point location with single linkage and numcp as 4
-detect_multiple_cp(X = X, numcp = 4, dist.method = "single")
+detect_multiple_cp(D = D_mat, numcp = 4, dist.method = "single")
 ```
 
-We observe that the correct change-point locations are obtained when *numcp* is supplied as $2$. However, if we do not have knowledge about the number of change-points to detect, then we will obtain incorrect change-point locations. In reality almost every situation requires first the estimation of number of change-point then estimation of change-point locations. 
+We observe that the correct change-point locations are obtained when *numcp* is supplied as $2$. However, if we do not have knowledge about the number of change-points to detect, then we will obtain incorrect change-point locations as we obtained when we supplied *numcp* equals $4$. In reality almost every situation requires first the estimation of number of change-point then estimation of change-point locations. 
 
-In order to address this problem we implemented cluster evaluation methods namely penalized Dunn index to estimate optimal number of clusters present in the data. Here is an example illustrating the use of the function. We again simulate from normal distribution where the first $15$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $15$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $15$ observations from $N_{150}(\mathbf{10}_{150}, \mathbf{I}_{150})$. 
+## Detecting change-point locations (number of change-points unknown)
+
+### Single/Multiple Change-point detection (detect_estimated_cp)
+
+In order to address the problem of unknown number of change-points to estimate, we implement cluster evaluation methods namely **penalized Dunn index** to estimate optimal number of clusters present in the data (subsequently change-points). Here is an example illustrating the use of the function. We again simulate from normal distribution where the first $15$ observations are from $N_{150}(\mathbf{0}_{150}, \mathbf{I}_{150})$, next $15$ observations are from $N_{150}(\mathbf{5}_{150}, \mathbf{I}_{150})$ and the last $15$ observations from $N_{150}(\mathbf{10}_{150}, \mathbf{I}_{150})$. 
 
 ```{r}
+# Example 3
+set.seed(1)
 # Generating data matrix
 X1 = matrix(rnorm((15 * 150), mean = 0, sd = 1), nrow = 15, ncol = 150)
 X2 = matrix(rnorm((15 * 150), mean = 5, sd = 1), nrow = 15, ncol = 150)
@@ -236,34 +254,41 @@ detect_estimated_cp(X = X, dist.method = "average")
 detect_estimated_cp(X = X, dist.method = "complete")
 ```
 
-Here we note some points. **First**, we could have supplied just the distance matrix calculated beforehand and not supply the original data matrix. But in that case we need to supply correct dimension of the observations in order to get good result. **Second**, for estimating the number of change-points, we have used penalized Dunn index which depends on penalty parameter $\lambda$. Here the default $\lambda = 0.02$ is supplied based on the best performance obtained from empirical studies. **Third**, we have used penalized version of Dunn index because the dunn index alone cannot detect the presence of a single cluster in the data (i.e. if there is no change-point). The following example illustrates that,
+Here we note some points. **First**, we could have supplied just the distance matrix calculated beforehand and not supply the original data matrix. But in that case we need to supply correct dimension of the observations in order to get good result. We have illustrated the use of the function **detect_estimated_cp** by different distance function later. **Second**, for estimating the number of change-points, we have used penalized Dunn index which depends on penalty parameter $\lambda$. Here the default $\lambda = 0.02$ is supplied based on the best performance obtained from empirical studies. The user may change it accordingly. **Third**, we have used penalized version of Dunn index because the dunn index alone cannot detect the presence of a single cluster in the data (i.e. if there is no change-point) to guard against false detection of change-point(s). Since the observations are time ordered, the function returns the last observation number in case of no-detection. The following example illustrates that,
 
 ```{r}
+# Example 4
+set.seed(1)
 # Genearate data with no change-points
 X = matrix(rnorm((20 * 150), mean = 0, sd = 1), nrow = 20, ncol = 150)
 
-detect_estimated_cp(X = X)
+detect_estimated_cp(X = X) # No change-points detected
 ```
 
 We observe that it returned the location of the last observation ($t = 20$) because no points are detected. Hence one of the advantages of the proposed algorithm is that it is able to **perform well when there is no change-point**. This guards against false detection. Moreover, this algorithm is **computationally less extensive in detecting multiple change-points** because it does not use partition methods to search for change-points each time. This enables the user to find the change-point locations in one go **without explicit need to perform hypothesis testing** for the potential change-point locations.  
 
+## Use of Mean Absolute Deviation of distances
+
+### MADD distance
+
 Now we consider another example where first $15$ observations are from $N_{200}(\mathbf{0}_{200}, \mathbf{I}_{200})$, next $15$ observations are from $N_{200}(\mathbf{0}_{200}, 1.5\mathbf{I}_{200})$ and the last $15$ observations from $N_{200}(\mathbf{0}_{200}, 2\mathbf{I}_{200})$. Here the observations differ in their scale not in their location. If we try to use our method using the Euclidean distance in the linkage methods, then we obtain the following result.
 
 ```{r}
-set.seed(0)
+# Example 5
+set.seed(1)
 # Generating data
 X1 = matrix(rnorm(15 * 200, mean = 0, sd = 1), nrow = 15, ncol = 200)
 X2 = matrix(rnorm(15 * 200, mean = 0, sd = 1.5), nrow = 15, ncol = 200)
 X3 = matrix(rnorm(15 * 200, mean = 0, sd = 2), nrow = 15, ncol = 200)
 X = rbind(X1, X2, X3)
 
-# Detecting change-point with Euclidean distance in linkage methods
-detect_estimated_cp(X = X)
+# Detecting change-point with Euclidean distance and single linkage
+detect_estimated_cp(X = X, dist.method = "single")
 ```
 
-The result suggests it is unable to detect the change-points because it returned the $t = 45$ (last observation number). Now we introduce the **mean absolute deviation of distance (MADD)** between $x_i$ and $x_j$ from $n$ observations $x_1, x_2, \cdots, x_n$, which is defined as,
+The result suggests it is unable to detect the change-points because it returned the $t = 45$ (last observation number). Now we introduce the **mean absolute deviation of distance (MADD)** between $x_i$ and $x_j$ from $n$ observations $\{x_1, x_2, \cdots, x_n\}$, which is defined as,
 $$ \rho_0(x_i,x_j) = \frac{1}{(n-2)}\sum_{k = 1, k \neq i,j}^n p^{-\frac{1}{2}}\left|\|x_i-x_k\| - \|x_j-x_k\| \right| $$ 
-where $\|\,.\,\|$ denotes the usual Euclidean distance. Using MADD distance to construct the distance matrix we obtain the following result,
+where $\|\,.\,\|$ denotes the usual Euclidean distance and $p$ is the dimension of the obsrvations. Using MADD distance to construct the distance matrix we obtain the following result,
 
 ```{r}
 # Calculate distance matrix (using MADD)
@@ -273,7 +298,13 @@ D_mat = distmat_HDLSS(X = X, option = "MADD")
 detect_estimated_cp(D = D_mat, p = 200)
 ```
 
-We note that, the successful detection of change-point is possible here because the neighbourhood structure is retained in high dimension when we use MADD distance in linkage methods. However, when using usual Euclidean distance, we can prove theoretically (also empirically) that for large $p$, observation from all three classes (for this example, class 1: observation no. 1-15, class 2: observation no. 16-30 and class 3: observation no. 31-45), will find their neighbour from class 1 with a very high probability. As a result, starting with the merging of the first class observations, the second class observations will get merged with the existing cluster of the first class observations and subsequently the third class observations will join. We have illustrated using a single run but simulations with more iterations also show encouraging results. 
+This illustrates the use of **distmat_HDLSS** function and then we can use **detect_estmated_cp** to detect the number of change-points as performed.
+We can also supply only the distance matrix calculated by using MADD or generalized MADD distance in **detect_single_cp** and **detect_multiple_cp** function as we illustrated earlier by using Euclidean distance matrix. 
+
+We note that, the successful detection of change-point is possible here because the neighborhood structure is retained in high dimension by MADD distance in linkage methods. However, when using usual Euclidean distance, we can prove theoretically (also empirically) that for large $p$, observation from all three classes (for this example, class 1: observation no. 1-15, class 2: observation no. 16-30 and class 3: observation no. 31-45), will find their neighbor from class 1 with a very high probability. As a result, starting with the merging of the first class observations, the second class observations will get merged with the existing cluster of the first class observations and subsequently the third class observations will join. We have illustrated using a single run but simulations with more iterations also show encouraging results. 
+
+
+### Generalized MADD distance
 
 Now we consider another example to illustrate the utility of generalized MADD distance. The generalized MADD dissimilarity measure between two observations $x_i$ and $x_j$, from a set of $n$ observations $\{x_1, \cdots, x_n\}$ is defined as,
 $$ \rho_{h,\psi} \left( x_i,x_j\right) =  \frac{1}{n-2} \sum_{k=1,k \neq j}^n \left| \phi_{h,\psi} (x_i,x_k) - \phi_{h,\psi} (x_j,x_k) \right| $$
@@ -304,6 +335,30 @@ detect_estimated_cp(D = D1_mat, p = 250)
 detect_estimated_cp(D = D2_mat, p = 250)
 ```
 
-We observe that, the change-point is not detected when Euclidean distance is used in the algorithm. However, we detected change-point as $20$ when MADD distance is used to construct the distance matrix. But this is not the true change-point. Then we used generalized MADD to construct the distance matrix and this successfully detected the change-point. The MADD distance did not work here because to prove high dimensional consistency ($p \rightarrow \infty$), we need $p^{-1}\|\mu_{1} - \mu_{2}\|^2 \rightarrow \nu^2_{1,2} > 0$ and $p^{-1}tr(\Sigma_{i})\rightarrow \sigma^2_i$ where $\sigma^2_1 \neq \sigma^2_2$, $\mu_{1}, \mu_{2}$ (respectively, $\Sigma_1$, $\Sigma_2$) location (respectively, covariance matrices) for two distribution before and after the change-points. But here, for the last change-point example, we have difference only in higher order marginals. Hence we use generalized distance. 
+We observe that, the change-point is not detected when Euclidean distance is used in the algorithm. However, we detected change-point as $20$ when MADD distance is used to construct the distance matrix. But this is not the true change-point. Then we used generalized MADD to construct the distance matrix and this successfully detected the change-point. The MADD distance did not work here because to prove high dimensional consistency ($p \rightarrow \infty$), we need $p^{-1}\|\mu_{1} - \mu_{2}\|^2 \rightarrow \nu^2 > 0$ and $p^{-1}tr(\Sigma_{i})\rightarrow \sigma^2_i$ where $\sigma^2_1 \neq \sigma^2_2$, $\mu_{1}, \mu_{2}$ (respectively, $\Sigma_1$, $\Sigma_2$) location (respectively, covariance matrices) for two distribution before and after the change-points. We can also prove the consistency result for multiple change-points which supports the empirical studies. Increasing the number of iterations and each time detecting a change-point, gives good support for the proposed algorithm with the usage of generalized MADD distance. Hence here, for the last change-point example, the MADD distance also failed to detect the change-point correctly because we have difference only in higher order marginals and we use generalized distance. 
 
-One can use any distance matrix in the algorithm, in the way illustrated. However, our simulation studies show that, using generalized MADD distance performs very well in detecting changes when we do not know if the change actually occurred in higher order marginals or not. 
+One can use any distance matrix in the algorithm, in the way illustrated. However, our simulation studies show that, using generalized MADD distance performs very well in detecting changes when we do not know if the change actually occurred in location, scale or higher order marginals. 
+
+## Conclusion
+
+This package develops functions for the proposed method which attempts to detect change-points in high dimensional low sample size regime when usual clustering and Euclidean distance fail. The advantages of the algorithm are that it does not require hypothesis testing for testing significance of potential change-point. It is also computationally less extensive in the sense that it detects multiple change-points in one go as it uses hierarchical clustering. This algorithm also provides guard against false detection of the change-points. We have illustrated the following,
+
+ - Change-point detection can be viewed as clustering problem.
+ 
+ - Use of detect_single_cp and detect_multiple_cp function to detect the location of the change-points when the number of change-points to detect is known.
+ 
+ - Use of detect_estimated_cp to detect the change-points when the number of change-points to detect is unknown. 
+ 
+ - Use of genMADD and MADD distance matrix within the algorithm for detecting changes in higher order marginals.
+ 
+This is an ongoing work and so far the results obtained are encouraging when compared with the other methods. Currently we are working on how it works in presence of outliers and implementing different cluster evaluation method apart from penalized dunn index to detect the number of change-points. 
+
+### Acknowledgement
+
+This is an ongoing joint work with Angshuman Roy (University of Haifa, Israel) and Alokesh Manna (University of Connecticut, USA). 
+
+### References
+ 1. Dunn, J. C. (1974). Wellseparated clusters and optimal fuzzy partitions. Journal of Cybernetics, 4(1):95-104; 
+ 
+ 2. Sarkar, S., and Ghosh, A. K. (2020) On perfect clustering of high dimension, low sample size data. IEEE PAMI,
+42(9):2257-2272.
