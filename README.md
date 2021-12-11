@@ -35,9 +35,31 @@ devtools::install\_github(“DawnTrisha/hclustHDCP”)
 
 As described earlier this package is intended to detect change-points
 specially in high dimensional low sample size regime when the changes
-are beyond mean change of the observations. There are four functions
-available. We note that we need to consider the following points while
-using the functions,
+are beyond mean change of the observations. There are three functions
+available for change-point detection and one function for calculating
+distance matrix using some different dissimilarity measures. First we
+illustrate how to use *distmat\_HDLSS* since it can be used with
+combination with other functions.
+
+## distmat\_HDLSS :
+
+Mean absolute deviation of distances(MADD) is used using Euclidean
+distance as well as more generalized distance function to construct
+distance matrix.
+
+``` r
+library(hclustHDCP)
+set.seed(1)
+# Generating n = 10 observations from t distribution with dimension p = 5
+X = matrix(stats::rt((10*5), ncp = 0, df = 4), nrow = 10, ncol = 5)
+
+# Distance matrix
+D_mat1 = distmat_HDLSS(X = X) # using default generalized MADD distance ("genMADD")
+D_mat2 = distmat_HDLSS(X = X, option = "MADD") # using MADD distance ("MADD")
+```
+
+Now we note that we need to consider the following points while using
+the functions,
 
 -   The user need to enter either the data matrix (X) or the distance
     matrix (D).
@@ -47,8 +69,8 @@ using the functions,
 
 -   If the one wants to use *genMADD distance* or *MADD distance*, use
     *distmat\_HDLSS* function to first compute the distance matrix and
-    then supply the matrix to the function *detect\_single\_cp* (See
-    Example 2).
+    then supply the distance matrix to the function *detect\_single\_cp*
+    (See Example 2).
 
 ## detect\_single\_cp :
 
@@ -56,11 +78,9 @@ Detects single change-point in a data sequence arranged chronologically.
 Here are the points to consider while using the function
 
 ``` r
-library(hclustHDCP)
-
-##### Example 1
+# Example 1
 set.seed(1)
-##### Generate data matrix
+# Generate data matrix
 X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
 X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
 X = rbind(X1, X2)
@@ -77,14 +97,14 @@ detect_single_cp(X = X, dist.method = "single") # Detect single change-point wit
     ## [1] 15
 
 ``` r
-##### Example 2
+# Example 2
 set.seed(1)
-##### Generate data matrix
+# Generate data matrix
 X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
 X2 = matrix(rnorm((15 * 50), mean = 4, sd = 1), nrow = 15, ncol = 50)
 X = rbind(X1, X2)
 
-##### Distance matrix (MADD distance)
+# Distance matrix (MADD distance)
 D_mat = distmat_HDLSS(X = X, option = "MADD")
 
 detect_single_cp(D = D_mat, dist.method = "complete")  # Detect single change-point with MADD distance matrix and complete linkage
@@ -101,25 +121,25 @@ to supply the number of change-points to detect (1 &lt; numcp &lt; n).
 Here is an illustration.
 
 ``` r
-##### Example 3
+# Example 3
 set.seed(1)
-##### Generate data matrix
+# Generate data matrix
 X1 = matrix(rnorm((15 * 50), mean = 0, sd = 1), nrow = 15, ncol = 50)
 X2 = matrix(rnorm((15 * 50), mean = 1, sd = 1), nrow = 15, ncol = 50)
 X3 = matrix(rnorm((15 * 50), mean = 2, sd = 1), nrow = 15, ncol = 50)
 X = rbind(X1, X2, X3)
 
-##### Detect two change-points with default average linkage
+# Detect two change-points with default average linkage
 detect_multiple_cp(X = X, numcp = 2)
 ```
 
     ## [1] 15 30
 
 ``` r
-##### Distance matrix (genMADD distance)
+# Distance matrix (genMADD distance)
 D_mat = distmat_HDLSS(X = X, option = "MADD")
 
-##### Detect two change-points with default average linkage
+# Detect two change-points with default average linkage
 detect_multiple_cp(D = D_mat, numcp = 2)
 ```
 
@@ -144,7 +164,7 @@ X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
 X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
 X = rbind(X1, X2, X3)
 
-# Detect change-points with default average linkage
+# Detect change-points with default average linkage without supplying distance matrix
 detect_estimated_cp(X = X)
 ```
 
@@ -153,8 +173,22 @@ detect_estimated_cp(X = X)
 ``` r
 # Calculation of distance matrix
 D_mat = as.matrix(stats::dist(X, method = "euclidean"))
+
 # Data matrix is used so supply the dimension of the data
 detect_estimated_cp(D = D_mat, p = 200)
+```
+
+    ## [1] 15 30
+
+We note that the **detect\_estimated\_cp** also uses penalty parameter
+*λ* = 0.02 as the default value to be used in penalized Dunn index. The
+value of the parameter is supplied based on the empirical studies (when
+the change is beyond mean change) and expected to provide good result.
+However, the user can change it if required. For example in example 4,
+
+``` r
+# Data matrix is used so supply the dimension of the data
+detect_estimated_cp(D = D_mat, p = 200, lambda = 0.1)
 ```
 
     ## [1] 15 30
