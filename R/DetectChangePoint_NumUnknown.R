@@ -6,7 +6,7 @@
 #' @param dist.method Linkage method to use in hierarchical clustering for calculating the distances between consecutive clusters. This must be one of "single", "average" or "complete". Default is "average".
 #' @param lambda Penalty parameter. Default is 0.02.
 #'
-#' @return Returns a integer or a numeric vector denoting estimated change-point location(s) depending on single or multiple change-point(s) is/are detected.
+#' @return Returns a integer or a numeric vector denoting estimated change-point location(s) depending on single or multiple change-point(s) is/are detected. Returns the last observation number (time point) in case of non-detection.
 #' @export
 #'
 #' @examples
