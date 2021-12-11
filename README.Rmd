@@ -39,7 +39,7 @@ D_mat2 = distmat_HDLSS(X = X, option = "MADD") # using MADD distance ("MADD")
 
 Now we note that we need to consider the following points while using the functions,
 
- - It is sufficient for the user to enter either the data matrix (X) or the distance matrix (D) along with the dimension (p) of the observations. In case user wants to enter both, then also the user needs the dimension of the observations.  
+ - It is sufficient for the user to enter either the data matrix (X) or the distance matrix (D).  
 
  - The function by default uses Euclidean distance to implement the algorithm.
 
@@ -97,7 +97,7 @@ detect_multiple_cp(D = D_mat, numcp = 2)
 ```
 
 ## detect_estimated_cp : 
-This function is used to detect change-point(s) in a data sequence arranged over time. The difference with the previous functions is that the user need not supply the number of change-points to detect which is a more realistic situation. Here also we need to consider the three points that we considered at the beginning. Additionally we also need to supply the dimension of the observations if distance matrix is used as input instead of data matrix. Here is an illustration.
+This function is used to detect change-point(s) in a data sequence arranged over time. The difference with the previous functions is that the user need not supply the number of change-points to detect which is a more realistic situation. Here also we need to consider the three points that we considered at the beginning. Additionally we also need to supply the dimension of the observations if distance matrix is used as input instead of data matrix. It is sufficient to supply either data matrix or distance matrix. But in case user wants to enter both, then also the user needs the dimension of the observations. Here is an illustration.
 
 ```{r}
 # Example 4
