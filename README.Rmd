@@ -13,7 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 This package deals with one of the classical problem in statistics, called change-point detection method. It attempts to detect abrupt significant changes in probability distributions for a sequence of observations arranged in chronological order. We implement change-point detection for high dimensional observations. This method detects change-points based on hierarchical clustering. The algorithm initially considers each observation as a cluster and at each subsequent step merges two closest consecutive clusters based on linkages (single, average or complete). Hence the number of clusters decreases by one in each step of the algorithm. In case the number of change-points to be detected is known, the algorithm stops when the desired number of clusters is reached. It returns the change-point locations where the cluster membership changes. However, if the number of change-points to detect is unknown, then we make use of some clustering evaluation algorithm like Penalized Dunn index to estimate optimal number of change-points. Here we also implement the algorithm using a different distance function, called the mean absolute deviation of distances (MADD distance) instead of usual Euclidean distance while calculating the linkage methods. This enables the method to perform well in low sample size situations as well for most of the occasions. Specifically when the changes in the observations are not in one dimensional marginal distributions and usual Euclidean distance fails to retain the neighbouhood structure of the observations.
 
 # Installation Instruction
-devtools::install_github("DawnTrisha/hclustHDCP")
+devtools::install_github("DawnTrisha/hclustHDCP", build_vignettes = TRUE)
+
+You can also use,
+
+devtools::install_github("DawnTrisha/hclustHDCP", build_vignettes = TRUE, force = TRUE)
 
 # Use of the functions
 As described earlier this package is intended to detect change-points specially in high dimensional low sample size regime when the changes are beyond mean change of the observations. There are three functions available for change-point detection and one function for calculating distance matrix using some different dissimilarity measures. First we illustrate how to use *distmat_HDLSS* since it can be used with combination with other functions.
