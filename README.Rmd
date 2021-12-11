@@ -39,7 +39,7 @@ D_mat2 = distmat_HDLSS(X = X, option = "MADD") # using MADD distance ("MADD")
 
 Now we note that we need to consider the following points while using the functions,
 
- - The user need to enter either the data matrix (X) or the distance matrix (D).
+ - It is sufficient for the user to enter either the data matrix (X) or the distance matrix (D) along with the dimension (p) of the observations. In case user wants to enter both, then also the user needs the dimension of the observations.  
 
  - The function by default uses Euclidean distance to implement the algorithm.
 
@@ -75,7 +75,7 @@ detect_single_cp(D = D_mat, dist.method = "complete")  # Detect single change-po
 
 
 ## detect_multiple_cp : 
-Detects multiple change-points in a data sequence arranged chronologically. Here also we need to consider the same three points that we used for detect_single_cp function. Additionally we also need to supply the number of change-points to detect (1 < numcp < n). Here is an illustration.
+Detects multiple change-points in a data sequence arranged chronologically. Here also we need to consider the same three points that we mentioned earlier. Additionally we also need to supply the number of change-points to detect (1 < numcp < n). Here is an illustration.
 
 ```{r}
 # Example 3
