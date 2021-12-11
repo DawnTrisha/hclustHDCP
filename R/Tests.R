@@ -113,3 +113,14 @@ dist_mat = as.matrix(stats::dist(X))
 
 detect_estimated_cp(D = dist_mat, p = 40)
 
+# Example 1
+set.seed(1)
+# Generate data matrix
+X1 = matrix(rnorm((15 * 200), mean = 0, sd = 1), nrow = 15, ncol = 200)
+X2 = matrix(rnorm((15 * 200), mean = 5, sd = 1), nrow = 15, ncol = 200)
+X3 = matrix(rnorm((15 * 200), mean = 10, sd = 1), nrow = 15, ncol = 200)
+X = rbind(X1, X2, X3)
+
+# Detect change-points with default average linkage
+detect_estimated_cp(X = X)
+
