@@ -1,4 +1,4 @@
-# Function to detect Single Change Point when it is known that only one change point exists
+# Function to detect Multiple Change Points when number of change-points to detect is known
 
 # Inputs:
 # Data matrix X (n X d) : whose rows are the d dimensional observations
