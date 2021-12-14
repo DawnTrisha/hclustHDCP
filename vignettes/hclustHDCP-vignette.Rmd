@@ -89,6 +89,7 @@ axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
 box()
 
 # Plot of 1st PC after clustering (clusters are denoted by red, blue and green)
+# (To create the plot we used y1, y2, y3, v1, v2, v3 variables to store the results)
 plot(y1, pch = 16, xlim = c(1,24), ylim = c(-8,8),
      xlab = "t", ylab = expression(paste("PC"[1])), 
      axes = F,
@@ -154,11 +155,12 @@ axis(side = 1, at = c(1,8,16,24), tck = -0.03)
 axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
 box()
 
-# Plot of 1st PC after clustering (clusters are denoted by red, blue and green)
+# Plot of 1st PC after clustering (clusters are denoted by red, blue and green) 
+# (To create the plot we used y1, y2, y3, v1, v2, v3 variables to store the results)
 plot(y1, pch = 16, xlim = c(1,24), ylim = c(-8,8),
      xlab = "t", ylab = expression(paste("PC"[1])),
      axes = F,
-     frame.plot = F, col = "red", main = expression(paste("(b) ", "Average Linkage")))
+     frame.plot = F, col = "red", main = expression(paste("(b) ", "Average Linkage"))) 
 axis(side = 1, at = c(1,8,16,24),tck = -0.03)
 axis(side = 2, at = c(-8,0,8), las = 2, tck = -0.03)
 points(y2, pch = 16, col = "blue")
@@ -287,8 +289,8 @@ detect_estimated_cp(X = X, dist.method = "single")
 ```
 
 The result suggests it is unable to detect the change-points because it returned the $t = 45$ (last observation number). Now we introduce the **mean absolute deviation of distance (MADD)** between $x_i$ and $x_j$ from $n$ observations $\{x_1, x_2, \cdots, x_n\}$, which is defined as,
-$$ \rho_0(x_i,x_j) = \frac{1}{(n-2)}\sum_{k = 1, k \neq i,j}^n p^{-\frac{1}{2}}\left|\|x_i-x_k\| - \|x_j-x_k\| \right| $$ 
-where $\|\,.\,\|$ denotes the usual Euclidean distance and $p$ is the dimension of the obsrvations. Using MADD distance to construct the distance matrix we obtain the following result,
+$$ \rho_0(x_i,x_j) = \frac{1}{(n-2)}\sum_{k = 1, k \neq i,j}^n \left|\|x_i-x_k\| - \|x_j-x_k\| \right| $$ 
+where $\|\,.\,\|$ denotes the usual Euclidean distance. Using MADD distance to construct the distance matrix we obtain the following result,
 
 ```{r}
 # Calculate distance matrix (using MADD)
