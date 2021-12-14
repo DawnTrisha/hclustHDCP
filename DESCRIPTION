@@ -7,9 +7,9 @@ Description: Change-point detection is a classical problem in statistics with
              various application areas such as univariate and multivariate 
              observations, even networks. Here hierarchical clustering method 
              based on linkages are applied to detect the change-points in 
-             high dimensional regime. Method is applicable for both the situations 
-             where the number of change-points to be detected is known as well as
-             unknown.
+             high dimensional regime. Method is applicable for both 
+             the situations where the number of change-points to be detected 
+             is known as well as unknown using different distance functions.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
