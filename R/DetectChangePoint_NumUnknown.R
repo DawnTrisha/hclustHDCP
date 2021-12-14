@@ -1,14 +1,12 @@
 # Function to detect Change Point(s) when number of change-points is unknown
-
 # Inputs:
 # Data matrix X (n X d) : whose rows are the d dimensional observations
 # Distance matrix (n X n)
 # p : Diemsnion of the observations
 # dist.method : Linkage method to be used in the hierarchical clustering (single, average or complete)
 # lambda : penalty parameter for penalized dunn index
-
 # Output:
-# detectcp: Detected location vector for detected multiple change-points
+# detectcp: Detected location(s) for detected change-point(s)
 #' Detecting change-point location(s) for unknown number of change-points
 #'
 #' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.

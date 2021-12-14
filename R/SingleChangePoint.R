@@ -1,12 +1,10 @@
 # Function to detect Single Change Point when it is known that only one change point exists
-
 # Inputs:
 # Data matrix X (n X d) : whose rows are the d dimensional observations
+# Distance matrix (n X n)
 # dist.method : Linkage method to be used in the hierarchical clustering (single, average or complete)
-
 # Output:
 # detectcp: Detected single change-point location
-
 #' Detecting single change-point
 #'
 #' @param X Data matrix (n X p) where n denotes number of observations. Each row is a p dimensional observation vector. n observations are arranged in chronological order.

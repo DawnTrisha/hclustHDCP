@@ -1,10 +1,9 @@
 # Function to detect Multiple Change Points when number of change-points to detect is known
-
 # Inputs:
 # Data matrix X (n X d) : whose rows are the d dimensional observations
+# Distance matrix (n X n)
 # dist.method : Linkage method to be used in the hierarchical clustering (single, average or complete)
 # numcp : Number of change-points to be detected (should be more than 1)
-
 # Output:
 # detectcp: Detected location vector for detected multiple change-points
 #' Detecting multiple change-point locations for known number of change-points
